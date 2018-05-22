@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Laravel JonathanBC</title>
-        <h1>hola mundo 1234567890'</h1>
+        <h1>KE HIZO MI SO'</h1>
         tydtyftf
 
         <!-- Fonts -->
