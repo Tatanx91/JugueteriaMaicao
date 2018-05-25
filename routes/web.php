@@ -17,5 +17,6 @@ Route::get('/', function () {
 });
 */
 
-//Route::resourse('Usuarios','UsuariosController');
-Route::get('/','UsuarioController@index');
+//Route::resourse('Usuarios','UsuarioController');
+//Route::get('/','UsuarioController@index');
+Route::get('/','InicioController@index');

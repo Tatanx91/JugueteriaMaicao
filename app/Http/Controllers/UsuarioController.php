@@ -31,6 +31,12 @@ class UsuarioController extends Controller
     	}
 
     }
+    public function getIndex()
+    {
+
+            return view('Usuario.index');
+    }
+    
 /*
     public function create()
     {
