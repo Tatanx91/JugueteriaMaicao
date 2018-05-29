@@ -1,101 +1,59 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layout.home')
 
-        <title>Laravel JonathanBC</title>
-        <h1>KE HIZO MI SO'</h1>
-        tydtyftf
+@section('content')
 
-        <!-- Fonts -->
-        <!--<link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">-->
-
-        <!-- Styles -->
-        <!--
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-        -->
-    </head>
-    <!--
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
+<header>
+        <div class="container">
+          <div class="brand">
+            <h1 class="brand_name"><a href="./">Maicao Gift Store</a></h1>
+            <p class="brand_slogan">Imagen de la compañia</p>
+            <img src="{{asset('Imagenes/hasbro.png')}}" style="width: 128px; height: 128px" />
+          </div>
         </div>
-    -->
-    </body>
-</html>
+
+        <!--
+        <div id="stuck_container" class="stuck_container">
+          <div class="container">
+            <nav class="nav">
+              <ul data-type="navbar" class="sf-menu">
+                <li class="active"><a href="./">Home</a>
+                </li>
+                <li><a href="index-1.html">About</a>
+                  <ul>
+                    <li><a href="#">Lorem ipsum dolor</a></li>
+                    <li><a href="#">Conse ctetur adipisicing</a></li>
+                    <li><a href="#">Elit sed do eiusmod
+                        <ul>
+                          <li><a href="#">Lorem ipsum</a></li>
+                          <li><a href="#">Conse adipisicing</a></li>
+                          <li><a href="#">Sit amet dolore</a></li>
+                        </ul></a></li>
+                    <li><a href="#">Incididunt ut labore</a></li>
+                    <li><a href="#">Et dolore magna</a></li>
+                    <li><a href="#">Ut enim ad minim</a></li>
+                  </ul>
+                </li>
+                <li><a href="index-2.html">Services</a>
+                </li>
+                <li><a href="index-3.html">FAQS</a>
+                </li>
+                <li><a href="index-4.html">Contacts</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        -->
+        <div id="Login">
+            <form action="Create.blade.php" method="post">
+                Usuario: <input type="text" name="Usuario"><br>
+                Contraseña: <input type="text" name="Contraseña"><br>
+                <input type="submit">
+            </form>
+        </div>
+
+      </header>
+      
+    <script src="{{asset('js/<script></script>.js ')}}" ></script>
+
+@endsection

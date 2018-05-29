@@ -18,5 +18,16 @@ Route::get('/', function () {
 */
 
 //Route::resourse('Usuarios','UsuarioController');
-//Route::get('/','UsuarioController@index');
+Route::get('/','UsuarioController@index');
 Route::get('/','InicioController@index');
+Route::get('/abrirform','UsuarioController@getIndex');
+
+Route::post('/RegistrarUsuario',[
+	'uses' => 'UsuarioController@store',
+	'as' => 'CrearUsuario'
+]);
+
+Route::post('/EditarUsuario',[
+	'uses' => 'UsuarioController@edit',
+	'as' => 'EditarUsuario'
+]);

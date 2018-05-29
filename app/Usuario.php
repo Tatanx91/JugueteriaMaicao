@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Usuario extends Model
 {
-    protected $table='Usuaario';
+    protected $table='usuarios';
 
     protected $primaryKey="idUsuario";
 
@@ -19,7 +19,7 @@ class Usuario extends Model
 	'ApellidoUsuario',
 	'IdTipoDocumento',
 	'NumeroDocumento',
-	'Contraseña'
+	'Contrasena'
     ];
 
     protected $guarded =[];

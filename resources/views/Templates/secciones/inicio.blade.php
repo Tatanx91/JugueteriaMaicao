@@ -40,7 +40,7 @@ header("Pragma: no-cache");
 
         <div class="row">
             <center>
-                {!!Form::open(array('id'=>'form-inicio-sesion','class'=>'navbar-form navbar-left'))!!}
+                {!!Form::open(array('id'=>'form-inicio-sesion','class'=>'navbar-form navbar-left', 'type' => 'POST'))!!}
 
                 <div class="container" >
 
@@ -66,7 +66,7 @@ header("Pragma: no-cache");
 
                         <div id="contenedor-boton-inicio">
 
-                            <a class="btn btn-info btn-md" id="btn-inicio-sesion" style="margin-top: 30px;">Ingresar</a>
+                            <a class="btn btn-info btn-md" id="btn-inicio-sesion" style="margin-top: 30px;" method="post" href="abrirform">Ingresar</a>
 
                         </div>
 
