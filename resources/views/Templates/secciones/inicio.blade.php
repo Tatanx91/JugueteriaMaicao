@@ -12,7 +12,7 @@ header("Pragma: no-cache");
 
     <head>
 
-        <title>Vendiendo.co - Facturación en Línea</title>
+        <title></title>
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -26,7 +26,7 @@ header("Pragma: no-cache");
 
 
 
-
+        
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 
     <title>Jugueteria Maicao</title>
@@ -40,38 +40,39 @@ header("Pragma: no-cache");
 
         <div class="row">
             <center>
-                {!!Form::open(array('id'=>'form-inicio-sesion','class'=>'navbar-form navbar-left', 'type' => 'POST'))!!}
-
                 <div class="container" >
 
                     <div class="">
-
-                        <div class="form-group">
-                            <i class="fa fa-at prefix" aria-hidden="true"></i>
-                            {!!Form::text("email",null,["id"=>"email"])!!}
-                            {!!Form::label("email","Correo electrónico")!!}
-                        </div>
-
-
-
-                        <div class="form-group">
-                            <i class="fa fa-lock prefix" aria-hidden="true"></i>
-                            {!!Form::password("password",["id"=>"password"])!!}
-                            {!!Form::label("password","Contraseña")!!}
-                        </div>
+                        <!--
+<form method="POST" action="http://127.0.0.1:8000/login" accept-charset="UTF-8" id="form-inicio-sesion" class="navbar-form navbar-left" type="POST">-->
+    {!! Form::open(['route' => 'login', 'method'=> 'POST']) !!}
+        {{  Form::token() }}
+        <div class="form-group">
+            <i class="fa fa-at prefix" aria-hidden="true"></i>
+            {!!Form::text("Correo",null,["id"=>"Correo"])!!}
+            {!!Form::label("Correo","Correo electrónico")!!}
+        </div>
 
 
 
+        <div class="form-group">
+            <i class="fa fa-lock prefix" aria-hidden="true"></i>
+            {!!Form::password("Contrasena",["id"=>"Contrasena"])!!}
+            {!!Form::label("Contrasena","Contraseña")!!}
+        </div>
+<!--<button>prueba</button>
+</form>-->
 
+        <div id="contenedor-boton-inicio">
 
-                        <div id="contenedor-boton-inicio">
+            <!--<a class="btn btn-info btn-md" id="btn-inicio-sesion" style="margin-top: 30px;" method="post" type="submit">Ingresar</a>-->
+            {!! Form::button('<i class = "btn btn-info btn-md"></i> Submit', array('type' => 'submit', 'class' => 'button', 'onclick' => 'return confirm("are you shure?")')) !!}
 
-                            <a class="btn btn-info btn-md" id="btn-inicio-sesion" style="margin-top: 30px;" method="post" href="abrirform">Ingresar</a>
+        </div>
 
-                        </div>
-
-                        <a href="{{url('/password/email')}}" class="col s12 blue-text text-darken-4 center" style="margin-top: 15px !important; font-size: small;">¿Olvidaste la contraseña?</a>
-                        {!!Form::hidden(null,url("/"),["id"=>"base_url"])!!}
+        <a href="{{url('/password/email')}}" class="col s12 blue-text text-darken-4 center" style="margin-top: 15px !important; font-size: small;">¿Olvidaste la contraseña?</a>
+        {!!Form::hidden(null,url("/"),["id"=>"base_url"])!!}
+    {!! Form::close() !!}
 
                     </div>
 
@@ -83,7 +84,6 @@ header("Pragma: no-cache");
             </center>
         </div>
 
-        {!!Form::close()!!}
 
 
     </body>

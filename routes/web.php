@@ -16,11 +16,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 */
-
-//Route::resourse('Usuarios','UsuarioController');
-Route::get('/','UsuarioController@index');
+//Route::resourses('Usuarios'=>'UsuarioController');
+//Route::get('/','UsuarioController@index');
 Route::get('/','InicioController@index');
+
 Route::get('/abrirform','UsuarioController@getIndex');
+Route::get('/login','AuthController@login');
+
+Route::post('/login',[
+	'uses' => 'AuthController@login',
+	'as' => 'login'
+]);
 
 Route::post('/RegistrarUsuario',[
 	'uses' => 'UsuarioController@store',

@@ -1,7 +1,10 @@
 @extends('layout.home')
 @section('content')
 
-	<table class="table table-bordered table-responsive" style="margin-top: 10px;">
+{{ Form::hidden('id_modulo', 'usuarios', array('id' => 'id_modulo')) }}
+
+<div class="table-responsive">
+	<table class="table table-striped display responsive nowrap" cellspacing="0" id="TablaUsuariosRegistrados" width="100%">
 		
 		<thead>
 			<tr>
@@ -27,5 +30,6 @@
 
 
 	</table>
+</div>
 
 @endsection

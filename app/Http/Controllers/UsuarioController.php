@@ -57,12 +57,15 @@ class UsuarioController extends Controller
 
         $NombreUsuario = $request ['NombreUsuario'];
         $NumeroDocumento = $request ['NumeroDocumento'];
-        $contrasena = bcrypt($request ['Contrasena']);
+        //$contrasena = bcrypt($request ['Contrasena']);
+        $contrasena = md5($request ['Contrasena']);
+        $Correo = $request ['Correo'];
 
         $usuario = new usuario();
         $usuario->NombreUsuario = $NombreUsuario;
         $usuario->NumeroDocumento = $NumeroDocumento;
         $usuario->Contrasena = $contrasena;
+        $usuario->Correo = $Correo;
 
         $usuario->save();
         //redirect('create');

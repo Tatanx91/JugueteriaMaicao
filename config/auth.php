@@ -12,10 +12,16 @@ return [
     | as required, but they're a perfect start for most applications.
     |
     */
-
+    /*
     'defaults' => [
         'guard' => 'web',
         'passwords' => 'users',
+    ],
+    */
+
+    'defaults' => [
+        'guard' => 'api',
+        'passwords' => 'Usuarios',
     ],
 
     /*
@@ -35,15 +41,23 @@ return [
     |
     */
 
+    /*
     'guards' => [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
+    */
+
+    'guards' => [
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'Usuarios',
+        ],
 
         'api' => [
             'driver' => 'token',
-            'provider' => 'users',
+            'provider' => 'usuarios',
         ],
     ],
 
@@ -65,9 +79,10 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'usuarios' => [
             'driver' => 'eloquent',
-            'model' => Jugueteria\User::class,
+            'model' => 'Usuario',
+            'table' => 'Usuarios',
         ],
 
         // 'users' => [
@@ -92,8 +107,8 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        'usuarios' => [
+            'provider' => 'usuarios',
             'table' => 'password_resets',
             'expire' => 60,
         ],

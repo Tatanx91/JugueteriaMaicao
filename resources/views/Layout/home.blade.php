@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Jugueteria Maicao</title>
+        <title>Maicao Gift Store</title>
         <h3>Configuracion del layout</h3>
         
 
@@ -16,6 +16,28 @@
 
         <script src="{{asset('js/jquery.js ')}}" ></script>
         <script src="{{asset('js/jquery-migrate-1.2.1.js')}}" ></script>
+
+        <!-- Bootstrap core CSS -->
+        {!! Html::style('/css/font-awesome.min.css') !!}
+        <link rel="stylesheet" href="{{ asset('css/booststrap/css/bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/dataTable/dataTables.bootstrap4.min.css') }}">
+
+        </style>
+
+    <script src="{{asset('js/jquery/jquery.min.js')}}"></script>
+    <script src="{{asset('js/general.js')}}"></script>
+    <script src="{{asset('css/booststrap/js/bootstrap.min.js')}}"></script>
+
+    <script src="{{asset('js/datatable/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('js/datatable/dataTables.bootstrap4.min.js')}}"></script>
+
+
+    <style type="text/css">
+        textarea{
+      resize: vertical !important;
+    }
+
+</head>
         
     </head>
     <body>
