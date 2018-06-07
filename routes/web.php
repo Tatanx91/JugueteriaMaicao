@@ -63,3 +63,16 @@ Route::post('/juguete/cambiaEstado',[
     'as' => 'cambiaEstado',
     'uses' => 'JugueteController@cambiaEstado'
 ]);
+
+Route::get('/Galeria/getGaleriaImg', array(
+    'as' => 'getGaleriaImg',
+    'uses' => 'GaleriaImgController@getGaleriaImg'
+));
+
+
+Route::post('/Galeria/GuardarImg', array(
+    'as' => 'GuardarImg',
+    'uses' => 'GaleriaImgController@GuardarImg'
+));
+
+

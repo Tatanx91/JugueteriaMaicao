@@ -15,6 +15,8 @@ class Juguete_model extends Model
 		'EdadInicial',
 		'EdadFinal',
 		'IdGenero',
+		'cantidad',
+		'descripcion',
 		'estado'
     ];
 }

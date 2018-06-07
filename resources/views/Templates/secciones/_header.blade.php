@@ -16,6 +16,7 @@
     {!! Html::style('/css/font-awesome.min.css') !!}
     <link rel="stylesheet" href="{{ asset('css/booststrap/css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dataTable/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dropzone.css') }}">
 
 <style type="text/css">
     textarea{
@@ -29,5 +30,6 @@
 
     <script src="{{asset('js/datatable/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('js/datatable/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('js/dropzone.js')}}"></script>
 
 </head>

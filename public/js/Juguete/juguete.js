@@ -3,9 +3,9 @@ var token = $("#_MTOKEN").val();
 function cargarTablaJuguete(){
 
 	var url = $('#APP_URL').val() + "/juguete/datatableListJuguete";//&_token=" + token;
-	var TablaEmpresasRegistradas = $("#TablaEmpresasRegistradas").dataTable({destroy:true});
-	TablaEmpresasRegistradas.fnDestroy();
-	TablaEmpresasRegistradas.DataTable({
+	var TablaJuguete = $("#TablaJuguete").dataTable({destroy:true});
+	TablaJuguete.fnDestroy();
+	TablaJuguete.DataTable({
 		"processing":true,
 		"serverSide":true,
 		"ajax":{
@@ -13,12 +13,14 @@ function cargarTablaJuguete(){
 			"type":"GET",
 		},
 		"columns":[
-			{"data": "IdJuguete", "className": "text-center"},
-			{"data": "NumeroReferencia", "className": "text-center hidden"},
+			// {"data": "IdJuguete", "className": "text-center"},
+			{"data": "NumeroReferencia", "className": "text-center"},
 			{"data": "NombreJuguete", "className": "text-center"},
-			{"data": "Dimensiones", "className": "text-center hidden"},
+			{"data": "Dimensiones", "className": "text-center"},
 			{"data": "EdadInicial", "className": "text-center"},
 			{"data": "EdadFinal", "className": "text-center"},
+			{"data": "cantidad", "className": "text-center"},
+			{"data": "descripcion", "className": "text-center"},
 			{"data": "NombreGenero", "className": "text-center"},
 			{"data": null, "defaultContent": "", "className": "text-center ","orderable": false },
 			{"data": null, "defaultContent": "", "className": "text-center ","orderable": false },
@@ -33,11 +35,10 @@ function cargarTablaJuguete(){
 				estado = "desactivar";
 				clase_estado = "fa-toggle-on";
 			}
-console.log(estado)
             		$(row).attr('id','tr_'+index);
-					$("td", row).eq(7).html("<span style='cursor: pointer;' class='fa fa-edit fa-2x' data-id='"+data.IdJuguete+"' id='EDITAR' title='Editar juguete'></span>");
-					$("td", row).eq(8).html("<span style='cursor: pointer;' id=estado_"+data.IdJuguete+" class='fa "+clase_estado+" fa-2x' onclick=activarDessactivarJuguete('"+data.IdJuguete+"','"+data.estado+"'); title='"+estado+" juguete'></span></button>")
-					$("td", row).eq(9).html("<span style='cursor: pointer;' class='fa fa-camera fa-2x'></span>")
+					$("td", row).eq(8).html("<span style='cursor: pointer;' class='fa fa-edit fa-2x' data-id='"+data.IdJuguete+"' id='EDITAR' title='Editar juguete'></span>");
+					$("td", row).eq(9).html("<span style='cursor: pointer;' id=estado_"+data.IdJuguete+" class='fa "+clase_estado+" fa-2x' onclick=activarDessactivarJuguete('"+data.IdJuguete+"','"+data.estado+"'); title='"+estado+" juguete'></span>")
+					$("td", row).eq(10).html("<a href='"+$("#APP_URL").val() +"/Galeria/getGaleriaImg?Id="+data.IdJuguete+"'><span style='cursor: pointer;' class='fa fa-camera fa-2x'title='Galeria de Imagenes'  ></span><a>")
 				//<button type='button' onclick=\"habilitar_deshabilitar_juguete('"+data.IdJuguete+"', 'deshabilitar')\" class='btn btn-primary' ></button>
 				//<button type='button' data-id='"+data.IdJuguete+"' id='EDITAR' class='btn btn-primary' data-toggle='modal' data-placement='bottom' data-target='#popup' title='Editar registro'><span class='fa fa-edit'></span></button>
 				//
@@ -59,7 +60,6 @@ function guardarJuguete(){
 	var url = $("#APP_URL").val() + "/juguete/postStore/";
 	var params = $("#form-juguete").serialize();
 	params += "&_token=" + token;
-	//console.log(url)
 	$.post(url, params).done(function(data){
 		cargarTablaJuguete()
 		$('.close').click();
