@@ -1,6 +1,12 @@
 @extends('Templates.secciones.app')
 
 @section('content')
+<?php
+$class_from='col-lg-12 ';
+if($countimg>=5){
+    $class_from .= 'd-none';
+}
+?>
      <div class="default" style="margin-bottom: 35px !important;">
             <div class="page-header">
                 <div>
@@ -16,34 +22,37 @@
 
         <div id="mensaje"></div>
 		{{ Form::hidden('id_modulo', 'galeriaIMG', array('id' => 'id_modulo')) }}
-        <div class="row" style="margin-bottom: 5px;">
-            <div class="col-lg-4"></div>
-            <div class="col-lg-4">
-                <center>
-                {!! Form::open(["id"=>"form-Img","class"=>"col-lg-12 dropzone text-center","enctype"=>"multipart/form-data"]) !!}
-                    <div id="div_logo">
-                        <div class="dz-message">
-                            Arrastra aquí tu imagen o haz clic aquí para agregar uno.
-                        </div>                
-                        <div class="dropzone-previews"></div>
-                    </div>
-                {!! Form::close() !!}
-                </center>  
+        <div id="form_img" class="{{$class_from}}"  style="margin-bottom: 35px !important;">
+            <div  class="row" style="margin-bottom: 5px;">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-4">
+                    <center>
+                    {!! Form::open(["id"=>"form-Img","class"=>"col-lg-12 dropzone text-center","enctype"=>"multipart/form-data"]) !!}
+                        <div id="div_logo">
+                            <div class="dz-message">
+                                Arrastra aquí tu imagen o haz clic aquí para agregar uno.
+                            </div>                
+                            <div class="dropzone-previews"></div>
+                        </div>
+                    {!! Form::close() !!}
+                    </center>  
+                </div>
+                <div class="col-lg-4"></div>
+                
             </div>
-            <div class="col-lg-4"></div>
+            <div class="row">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-4">                
+                    <center>
+                        <button class="btn btn-success text-center" id="btn_logo">Guardar</button>
+                    </center> 
+                </div>
+                <div class="col-lg-4"></div> 
+            </div>
             
         </div>
-        <div class="row">
-            <div class="col-lg-4"></div>
-            <div class="col-lg-4">                
-                <center>
-                    <button class="btn btn-success text-center" id="btn_logo">Guardar</button>
-                </center> 
-            </div>
-            <div class="col-lg-4"></div> 
-        </div>
 
-        <div class="row">
+        <div id="contenedor_img" class="row">
             @foreach ($img as $item)
             <div class="col-lg-4 col-md-4 col-sm-3 col-sm-2" style="margin-bottom: 5% !important;">
                 <div class="card text-center">
@@ -62,6 +71,9 @@
         </div>
 
 <script type="text/javascript">
+    var contadorImg = '{{$countimg}}';
+    var maxfile = 5;
+
         Dropzone.autoDiscover = false;
         var urlForm = $('#APP_URL').val() +"/Galeria/GuardarImg/";
         console.log(urlForm)
@@ -71,13 +83,15 @@
         acceptedFiles: "image/jpeg,image/png",
         autoProcessQueue: false,
         uploadMultiple: false,
-        maxFilezise: 5,
-        maxFiles: 5,
+        maxFilesize: 2,
+        maxFilezise: maxfile,
+        maxFiles: maxfile,
         addRemoveLinks: true,
         parallelUploads: 1,
         dictRemoveFile: '<span class="glyphicon glyphicon-remove-circle" style="margin-top: -140px; float: right; color:#39805F !important"></<span>',
 
             init: function() {
+                contadorImgd = '{{$countimg}}';
                 var submitBtn = document.querySelector("#btn_logo");
                 myDropzones = this;            
                 submitBtn.addEventListener("click", function(e){
@@ -105,9 +119,36 @@
                 this.on("success", function(file, response) {
                     console.log(file);
                     console.log(response);      
-                      $("#mensaje").html('<div class="alert alert-success alert-dismissible div-msg" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><b>'+response.mensaje+'</b></center></div>')       
+                      $("#mensaje").html('<div class="alert alert-success alert-dismissible div-msg" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><b>'+response.mensaje+'</b></center></div>')   
+                      cargaImgs({{$juguete->IdJuguete}});
+                     contadorImgd++;
+                     alert(contadorImgd)
+                      validaForm(contadorImgd);
                 });
             }
         });
+    $(document).ready(function(){
+       
+        /**/
+    });
+    function  validaForm(contador){
+        this.contadorImg = contador;
+        alert(this.contadorImg+'>='+this.maxfile)
+        if(this.contadorImg >= this.maxfile){
+            $("#form_img").addClass('d-none');
+        }
+    }
+    function cargaImgs(id){
+     var url = $("#APP_URL").val() + "/Galeria/CargarContenedorImg/";
+        $.post(url,{IdJuguete : id,_token:token})
+            .done(function(data){
+                console.log(data);
+                $("#contenedor_img").html(data);    
+                    
+            }).fail(function(jqXHR){
+                $("#mensaje").html('<div class="alert alert-danger alert-dismissible div-msg" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><b>Error al actualizar imagenes</b></center></div>')
+                
+            });
+    } 
 </script>
 @endsection

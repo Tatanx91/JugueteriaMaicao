@@ -76,3 +76,8 @@ Route::post('/Galeria/GuardarImg', array(
 ));
 
 
+Route::post('/Galeria/CargarContenedorImg', array(
+    'as' => 'CargarContenedorImg',
+    'uses' => 'GaleriaImgController@CargarContenedorImg'
+));
+
