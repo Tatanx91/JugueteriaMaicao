@@ -50,13 +50,13 @@ return [
     */
 
     'guards' => [
-        'api' => [
-            'driver' => 'jwt',
-            'provider' => 'Usuarios',
-        ],
+        // 'api' => [
+        //     'driver' => 'jwt',
+        //     'provider' => 'Usuarios',
+        // ],
 
         'api' => [
-            'driver' => 'token',
+            'driver' => 'jwt',
             'provider' => 'usuarios',
         ],
     ],
@@ -81,7 +81,7 @@ return [
     'providers' => [
         'usuarios' => [
             'driver' => 'eloquent',
-            'model' => 'Usuario',
+            'model' => 'Jugueteria\model\UsuariosModel',
             'table' => 'Usuarios',
         ],
 

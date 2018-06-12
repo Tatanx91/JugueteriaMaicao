@@ -1,35 +1,48 @@
-@extends('layout.home')
+@extends('Templates.secciones.app')
 @section('content')
+	<div class="default" style="margin-bottom: 10px !important;">
+        <div class="page-header">
+            <div>
+                <h3 class="title_general">
+                    Usuarios
 
-{{ Form::hidden('id_modulo', 'usuarios', array('id' => 'id_modulo')) }}
+              
+                        <button type="button" id="AGREGAR"  class="btn btn-primary derecha"  data-toggle="modal" data-placement="bottom" data-target="#popup" title="Agregar registro" >
+                            <span class="fa fa-plus"></span>
+                        </button>
+                </h3>
+            </div>
+        </div>
+    </div>
 
-<div class="table-responsive">
-	<table class="table table-striped display responsive nowrap" cellspacing="0" id="TablaUsuariosRegistrados" width="100%">
+    <div id="mensaje"></div>
+    {{ Form::hidden('id_modulo', 'usuario', array('id' => 'id_modulo')) }}
+
+    <div class="table-responsive">
+        <table class="table table-striped display responsive nowrap" cellspacing="0" id="TablaUsuariosRegistrados" width="100%">
+            <thead  class="thead-dark">
+                <tr class="text-center">                        
+                    <th>Id</th>
+                    <th>Numero documento</th>
+                    <th>Nombre Usuario</th>
+                    <th>Apellido Usuario</th>
+                    <th>Correo</th>
+                    <th>Tipo de Usuario</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    {!! Html::script('js/Usuario/usuario.js') !!}
+
+    <script type="text/javascript">
+        var token = $("#_MTOKEN").val();
+        $(document).ready(function(){
+            CargarTablaUsuarios();
+        });
+    </script>
+
 		
-		<thead>
-			<tr>
-				<td>Nombre Usuario</td>
-				<td>Apellido Usuario</td>
-				<td>Id Tipo Documento</td>
-				<td>Numero Documento</td>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach ($Usuario as $usuarios)
-				<tr>
-					<td>{{ $usuarios->NombreUsuario }}</td>
-					<td>{{ $usuarios->ApellidoUsuario }}</td>
-					<td>{{ $usuarios->IdTipoDocumento }}</td>
-					<td>{{ $usuarios->NumeroDocumento }}</td>
-					<td>
-						<a href="{{ route('EditarUsuario', $usuarios->IdUsuario) }}" class="btn btn-success">Editar</a>
-					</td>
-				</tr>
-			@endforeach
-		</tbody>
-
-
-	</table>
-</div>
-
 @endsection

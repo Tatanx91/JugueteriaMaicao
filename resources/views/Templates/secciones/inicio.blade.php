@@ -29,7 +29,7 @@ header("Pragma: no-cache");
         
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 
-    <title>Jugueteria Maicao</title>
+    <title>Maicao Gift Store</title>
     <script src="{{asset('js/jquery/jquery.min.js')}}"></script>
     <link rel="stylesheet" href="{{ asset('css/booststrap/css/bootstrap.css') }}">
     <script src="{{asset('css/booststrap/js/bootstrap.min.js')}}"></script>
@@ -47,6 +47,8 @@ header("Pragma: no-cache");
 <form method="POST" action="http://127.0.0.1:8000/login" accept-charset="UTF-8" id="form-inicio-sesion" class="navbar-form navbar-left" type="POST">-->
     {!! Form::open(['route' => 'login', 'method'=> 'POST']) !!}
         {{  Form::token() }}
+
+        <img src="{{asset('Imagenes/Logo_web_Maicao.png')}}" style="width: 128px; height: 128px" />
         <div class="form-group">
             <i class="fa fa-at prefix" aria-hidden="true"></i>
             {!!Form::text("Correo",null,["id"=>"Correo"])!!}
@@ -66,7 +68,8 @@ header("Pragma: no-cache");
         <div id="contenedor-boton-inicio">
 
             <!--<a class="btn btn-info btn-md" id="btn-inicio-sesion" style="margin-top: 30px;" method="post" type="submit">Ingresar</a>-->
-            {!! Form::button('<i class = "btn btn-info btn-md"></i> Submit', array('type' => 'submit', 'class' => 'button', 'onclick' => 'return confirm("are you shure?")')) !!}
+            {!! Form::button('<i class = "btn btn-info btn-md"></i> Submit', array('type' => 'submit', 'class' => 'button')) !!}
+            {{--  'onclick' => 'return confirm("are you shure?")')) !!}--}}
 
         </div>
 

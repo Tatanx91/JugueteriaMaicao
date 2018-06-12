@@ -114,12 +114,21 @@ class JugueteController extends Controller
                 ]);
         }
         
-        return response([
+        // return response([
+        //         "success" => true,
+        //         "mensaje" => "Datos guardados correctamente",
+        //         //"request" => $request->all(),
+        //         "juguete" => $juguete
+        //     ]);
+
+        $retorno = [
                 "success" => true,
                 "mensaje" => "Datos guardados correctamente",
                 //"request" => $request->all(),
-                "juguete" => $juguete
-            ]);
+                "usuario" => $juguete
+            ];
+
+        return view('Juguete.index');
     }
 
     /**

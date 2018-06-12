@@ -5,6 +5,8 @@ namespace Jugueteria\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Jugueteria\Http\Controllers\Controller;
+use JWTAuth;
+use Tymon\JWTAuth\Exception\JWTException;
 
 class AuthController extends Controller
 {
@@ -23,22 +25,36 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(request $request)
+    public function login()
     {
-        $Correo = $request['Correo'];
-        //$Contrasena = bcrypt($request['Contrasena']);
-        $Contrasena = md5($request['Contrasena']);
-
         $credentials = request(['Correo', 'Contrasena']);
-        $credentials['Contrasena'] = $Contrasena;
+        $Contrasena = md5($credentials['Contrasena']);
+        $credentials['Contrasena'] =$Contrasena;
 
-
-        if (! $token = Auth()->attempt($credentials)) {
+        if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        //return $token;
-        return $this->respondWithToken($token);
+        //return $this->respondWithToken($token);
+        return view('Usuario.ConsultarUsuarios',compact('UsuariosModel'));
+
+        // $Correo = $request['Correo'];
+        // //$Contrasena = bcrypt($request['Contrasena']);
+        // $Contrasena = md5($request['Contrasena']);
+
+        // $credentials = request(['Correo', 'Contrasena']);
+        // $credentials['Contrasena'] = $Contrasena;
+    }
+
+    public function CambiarContrasena(Request $request, $IdUsuario)
+    {
+        $Usuario = UsuariosModel::find($IdUsuario);
+        $Usuario->Contrasena =  md5($request['Contrasena']);
+        $Usuario->Confirmado = 1;
+        $Usuario->save();
+
+        return redirect::to('/Inicio');
+
     }
 
     /**
