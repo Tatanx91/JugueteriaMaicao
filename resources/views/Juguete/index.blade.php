@@ -24,19 +24,21 @@
         <div id="mensaje"></div>
 		{{ Form::hidden('id_modulo', 'juguete', array('id' => 'id_modulo')) }}
         <div class="table-responsive">
-            <table class="table table-striped display responsive nowrap" cellspacing="0" id="TablaEmpresasRegistradas" width="100%">
+            <table class="table table-striped display responsive nowrap" cellspacing="0" id="TablaJuguete" width="100%">
                 <thead  class="thead-dark">
                     <tr class="text-center">                        
-                        <th>Id</th>
-                        <th>NumeroReferencia</th>
-                        <th>NombreJuguete</th>
-                        <th>Dimensiones</th>
-                        <th>EdadInicial</th>
-                        <th>EdadFinal</th>
-                        <th>IdGenero</th>                        
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                       {{--  <th>Id</th> --}}
+                        <th width="10%">Referencia</th>
+                        <th width="10%">Nombre</th>
+                        <th width="10%">Dimensiones</th>
+                        <th width="10%">EdadInc</th>
+                        <th width="10%">EdadFinal</th>
+                        <th width="10%">Cantidad</th>
+                        <th width="10%">Descripción</th>
+                        <th width="10%">Genero</th>                        
+                        <th width="7%"></th>
+                        <th width="7%"></th>
+                        <th width="7%"></th>
                     </tr>
                 </thead>
             </table>
@@ -47,9 +49,9 @@
             var token = $("#_MTOKEN").val();
             $(document).ready(function(){
                 cargarTablaJuguete()
-                // var TablaEmpresasRegistradas = $("#TablaEmpresasRegistradas").dataTable({destroy:true});
-                // TablaEmpresasRegistradas.fnDestroy();
-                // TablaEmpresasRegistradas.DataTable();
+                // var TablaJuguete = $("#TablaJuguete").dataTable({destroy:true});
+                // TablaJuguete.fnDestroy();
+                // TablaJuguete.DataTable();
             });
         </script>
 @endsection

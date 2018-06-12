@@ -71,3 +71,34 @@ function validaCampos(form){
                 this.value='';
         }
     });
+
+function validarLongitud(id_campo_texto, numero_caracteres_permitidos, caracteres) {
+     
+    var campo_texto = id_campo_texto;
+    var campo_caracteres = "c_" + id_campo_texto;
+    var numero_caracteres = $("#" + campo_texto).val().length;
+    var numero_permitido = numero_caracteres_permitidos;
+
+    if (numero_caracteres > numero_permitido) {
+        $("#" + campo_texto).val(contenido_textarea);
+    } else {
+        contenido_textarea = $("#" + campo_texto).val();
+    }
+    if (caracteres == 1) {
+        cuenta(numero_caracteres, campo_caracteres, numero_permitido);
+    }
+
+}
+
+function cuenta(numero_caracteres, campo_caracteres, numero_permitido) {
+
+    var id = campo_caracteres;
+
+    if (numero_caracteres > numero_permitido) {
+        numero_caracteres--;
+        $("#" + id).text(numero_caracteres);
+    }
+    else {  
+        $("#" + id).text(numero_caracteres);
+    }
+}

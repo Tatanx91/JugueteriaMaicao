@@ -52,6 +52,8 @@ class JugueteController extends Controller
                 'juguete.EdadInicial',
                 'juguete.EdadFinal',
                 'juguete.IdGenero',
+                'juguete.descripcion',
+                'juguete.cantidad',
                 'juguete.estado',
                 'genero.IdGenero',
                 'genero.NombreGenero');
@@ -69,6 +71,8 @@ class JugueteController extends Controller
                          "Dimensiones LIKE '%". $search['value'] . "%' OR " .
                          "EdadInicial LIKE '%". $search['value'] . "%' OR " .
                          "EdadFinal LIKE '%". $search['value'] . "%' OR " .
+                         "descripcion LIKE '%". $search['value'] . "%' OR " .
+                         "cantidad LIKE '%". $search['value'] . "%' OR " .
                          "genero.NombreGenero LIKE '%". $search['value']. "%')");
             }
         
@@ -163,7 +167,7 @@ class JugueteController extends Controller
             $IdJuguete = $request->input('IdJuguete');
             $estado = $request->input('estado');
             $juguete = Juguete_model::find($IdJuguete);
-            $juegute['estado'] = $estado;
+            $juguete['estado'] = $estado;
             $data = $request->all();
             $juguete->fill($data);
             $juguete->save();
@@ -189,8 +193,4 @@ class JugueteController extends Controller
      * @param  \Jugueteria\Juguete  $juguete
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Juguete $juguete)
-    {
-        //
-    }
 }

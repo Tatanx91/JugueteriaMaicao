@@ -108,9 +108,29 @@ Route::post('/juguete/cambiaEstado',[
     'uses' => 'JugueteController@cambiaEstado'
 ]);
 
+<<<<<<< HEAD
 
 //Rutas correos
 Route::get('/registro/verificacion/{CodigoConf}', array(
     'as' => 'verificacion',
     'uses' => 'UsuarioController@VerificarUsuario'
 ));
+=======
+Route::get('/Galeria/getGaleriaImg', array(
+    'as' => 'getGaleriaImg',
+    'uses' => 'GaleriaImgController@getGaleriaImg'
+));
+
+
+Route::post('/Galeria/GuardarImg', array(
+    'as' => 'GuardarImg',
+    'uses' => 'GaleriaImgController@GuardarImg'
+));
+
+
+Route::post('/Galeria/CargarContenedorImg', array(
+    'as' => 'CargarContenedorImg',
+    'uses' => 'GaleriaImgController@CargarContenedorImg'
+));
+
+>>>>>>> f65405d166db4216d4db280b7dfcdd030f1a1b61
