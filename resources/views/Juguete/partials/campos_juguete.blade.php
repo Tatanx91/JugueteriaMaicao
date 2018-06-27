@@ -11,8 +11,8 @@
 		</div>
 
 		<div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
-			{!! Form::label('NombreJuguete', 'NombreJuguete:') !!}
-			{!! Form::text('NombreJuguete', $juguete->NombreJuguete, array('id' => 'NombreJuguete', 'class' => 'form-control', 'placeholder' => 'Nombre del juguete')) !!}			
+			{!! Form::label('Nombre', 'Nombre Juguete:') !!}
+			{!! Form::text('Nombre', $juguete->Nombre, array('id' => 'Nombre', 'class' => 'form-control', 'placeholder' => 'Nombre del juguete')) !!}			
 		</div>
 
 		<div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">

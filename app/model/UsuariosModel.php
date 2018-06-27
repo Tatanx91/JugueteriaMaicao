@@ -23,25 +23,20 @@ class UsuariosModel extends Authenticatable implements JWTSubject
         return [];
     }
 
-    protected $table='usuarios';
+    protected $table='usuario';
 
-    protected $primaryKey="idUsuario";
+    protected $primaryKey="ID";
 
     public $timestamps=false;
 
 
     protected $fillable=[
-    'IdUsuario',
-    'NombreUsuario',
-    'ApellidoUsuario',
-    'IdTipoDocumento',
-    'NumeroDocumento',
+    'ID',
     'Contrasena',
-    'Estado',
     'Correo',
+    'IdTipoUsuario',
     'Confirmado',
-    'CodigoConf',
-    'TipoUsuario'
+    'CodigoConf'
     ];
 
     protected $guarded =[];

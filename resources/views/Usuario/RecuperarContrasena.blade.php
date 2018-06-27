@@ -1,7 +1,7 @@
 @extends('Templates.secciones.app')
 @section('content')
 
-    {{ Form::hidden('id_modulo', 'CambiarContraseña', array('id' => 'id_modulo')) }}
+    {{ Form::hidden('id_modulo', 'RecuperarCambiarContraseña', array('id' => 'id_modulo')) }}
 
 	<div class="default" style="margin-bottom: 10px !important;">
         <div class="page-header">
@@ -11,19 +11,19 @@
                 </h3>
             </div>
         </div>
-        {!! Form::open(['route' => 'CambiarContrasena', 'method'=> 'POST', 'IdUsuario'=> 'IdUsuario' ]) !!}
+        {!! Form::open(['route' => 'RecuperarCambiarContrasena', 'method'=> 'POST', 'IdUsuario'=> 'IdUsuario' ]) !!}
 
         {{ Form::hidden('IdUsuario', $IdUsuario) }}
 
         <div class="form-group" align="center">
-        	{!! Form::label('ContrasenaActual', 'Contraseña actual', ['class'=> 'control-label col.md-2']) !!}
-			{!! Form::password('ContrasenaActual', null, ['class'=> '']) !!}
+        	{!! Form::label('NuevaContrasena', 'Nueva Contraseña', ['class'=> 'control-label col.md-2']) !!}
+			{!! Form::password('NuevaContrasena', null, ['class'=> '']) !!}
         </div>
 
         <div class="form-group" align="center">
-        	{!! Form::label('NuevaContrasena', 'Nueva Contraseña', ['class'=> 'control-label col.md-2']) !!}
+        	{!! Form::label('ReperirContrasena', 'Reperir Contraseña', ['class'=> 'control-label col.md-2']) !!}
 			{{-- {!! Form::text('NuevaContrasena', null, ['class'=> 'form-control']) !!} --}}
-            {!! Form::password('NuevaContrasena', null, ['class'=> '']) !!}
+            {!! Form::password('ReperirContrasena', null, ['class'=> '']) !!}
         </div>
 
         <div id="contenedor-boton-inicio" align="center">

@@ -6,7 +6,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Maicao Gift Store</title>
-        <h3>Configuracion del layout</h3>
         
 
         <link rel="stylesheet" type="text/css" href="{{asset('css/grid.css')}}">

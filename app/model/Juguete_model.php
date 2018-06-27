@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Juguete_model extends Model
 {    
-	protected $primaryKey = "IdJuguete";
+	protected $primaryKey = "ID";
     protected $table = "juguete";
     protected $fillable = [
 		'NumeroReferencia',
-		'NombreJuguete',
+		'Nombre',
 		'Dimensiones',
 		'EdadInicial',
 		'EdadFinal',

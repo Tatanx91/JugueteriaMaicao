@@ -4,7 +4,7 @@
         <div class="page-header">
             <div>
                 <h3 class="title_general">
-                    Usuarios
+                    Usuarios Administradores
 
               
                         <button type="button" id="AGREGAR"  class="btn btn-primary derecha"  data-toggle="modal" data-placement="bottom" data-target="#popup" title="Agregar registro" >
@@ -22,12 +22,11 @@
         <table class="table table-striped display responsive nowrap" cellspacing="0" id="TablaUsuariosRegistrados" width="100%">
             <thead  class="thead-dark">
                 <tr class="text-center">                        
-                    <th>Id</th>
-                    <th>Numero documento</th>
+                    {{-- <th>Id</th> --}}
                     <th>Nombre Usuario</th>
-                    <th>Apellido Usuario</th>
+                    <th>Numero documento</th>
                     <th>Correo</th>
-                    <th>Tipo de Usuario</th>
+                    {{-- <th>Tipo de Usuario</th> --}}
                     <th></th>
                     <th></th>
                 </tr>

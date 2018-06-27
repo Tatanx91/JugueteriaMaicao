@@ -13,12 +13,11 @@ function CargarTablaUsuarios()
 			"type":"GET",
 		},
 		"columns":[
-			{"data": "IdUsuario", "className": "text-center"},
-			{"data": "NumeroDocumento", "className": "text-center hidden"},
+			// {"data": "ID", "className": "text-center"},
 			{"data": "NombreUsuario", "className": "text-center"},
-			{"data": "ApellidoUsuario", "className": "text-center hidden"},
+			{"data": "NumeroDocumento", "className": "text-center hidden"},
 			{"data": "Correo", "className": "text-center"},
-			{"data": "TipoUsuario", "className": "text-center"},
+			// {"data": "TipoUsuario", "className": "text-center"},
 			{"data": null, "defaultContent": "", "className": "text-center ","orderable": false },
 			{"data": null, "defaultContent": "", "className": "text-center ","orderable": false },
 			//{"data": null, "defaultContent": "", "className": "text-center ","orderable": false }
@@ -28,14 +27,14 @@ function CargarTablaUsuarios()
 			var estado = "activar";
 			clase_estado = "fa-toggle-off";
 
-			if(data.estado == "1"){
+			if(data.Estado == "1"){
 				estado = "desactivar";
 				clase_estado = "fa-toggle-on";
 			}
-console.log(estado)
+// console.log(data.Estado)
             		$(row).attr('id','tr_'+index);
-					$("td", row).eq(6).html("<span style='cursor: pointer;' class='fa fa-edit fa-2x' data-id='"+data.IdUsuario+"' id='EDITAR' title='Editar Usuario'></span>");
-					$("td", row).eq(7).html("<span style='cursor: pointer;' id=estado_"+data.IdUsuario+" class='fa "+clase_estado+" fa-2x' onclick=activarDessactivarUsuario('"+data.IdUsuario+"','"+data.estado+"'); title='"+estado+" usuario'></span></button>")
+					$("td", row).eq(3).html("<span style='cursor: pointer;' class='fa fa-edit fa-2x' data-id='"+data.ID+"' id='EDITARUSUARIO' title='Editar Usuario'></span>");
+					$("td", row).eq(4).html("<span style='cursor: pointer;' id=Estado_"+data.ID+" class='fa "+clase_estado+" fa-2x' onclick=activarDessactivarUsuario('"+data.ID+"','"+data.Estado+"'); title='"+estado+" usuario'></span></button>")
 					//$("td", row).eq(7).html("<span style='cursor: pointer;' class='fa fa-camera fa-2x'></span>")
 				//<button type='button' onclick=\"habilitar_deshabilitar_juguete('"+data.IdJuguete+"', 'deshabilitar')\" class='btn btn-primary' ></button>
 				//<button type='button' data-id='"+data.IdJuguete+"' id='EDITAR' class='btn btn-primary' data-toggle='modal' data-placement='bottom' data-target='#popup' title='Editar registro'><span class='fa fa-edit'></span></button>
@@ -70,15 +69,16 @@ function guardarUsuario(){
 	});
 }
 
-function activarDessactivarUsuario(id,estado){
+function activarDessactivarUsuario(id,Estado){
 	var estado_update = 1;
 
-	if(estado == "1"){
-		estado_update = 0; 
+	if(Estado == "1"){
+		
+		estado_update = 0;
 	}
 
 	var url = $("#APP_URL").val() + "/Usuario/CambiaEstadoUsuario/";
-	$.post(url,{estado : estado_update,IdUsuario : id,_token:token})
+	$.post(url,{Estado : estado_update,IdUsuario : id,_token:token})
 	.done(function(data){
 		CargarTablaUsuarios()
 		$("#mensaje").html('<div class="alert alert-success alert-dismissible div-msg" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><b>'+data.mensaje+'</b></center></div>')		

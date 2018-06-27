@@ -20,10 +20,60 @@
                     <td>
                         <div class="item-subMenuApp unlock">
                             <div class="item-subMenuApp-header">
-                                <a href="{{ url('/') }}" title="Menú" style="cursor:pointer;">
+                                <a href="{{ url('/inicio/menu') }}" title="Menú" style="cursor:pointer;">
                                     <div class="subMenu-icon">                   
-                                        <span class="fa fa-home" aria-hidden="true" style="color:#295c93"></span>
+                                        {{-- <span class="fa fa-home" aria-hidden="true" style="color:#295c93"></span> --}}
+                                        <span class="fa fa-home" aria-hidden="true" style="color:#FFFFFF"></span>
                                     </div>
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="item-subMenuApp unlock">
+                            <div class="item-subMenuApp-header">
+                                <a href="{{ url('Usuarios') }}" title="Usuarios" style="color: #FFFFFF;">
+                                    Usuarios
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                    <td>'          /             '</td>
+                    <td>
+                        <div class="item-subMenuApp unlock">
+                            <div class="item-subMenuApp-header">
+                                <a href="{{ url('Juguete') }}" title="Juguetes" style="color: #FFFFFF;">
+                                    Juguetes
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                    <td>'             /          '</td>
+                    <td>
+                        <div class="item-subMenuApp unlock">
+                            <div class="item-subMenuApp-header">
+                                <a href="{{ url('Empleado') }}" title="Empleado" style="color: #FFFFFF;">
+                                    Empleado
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                    <td>'             /          '</td>
+                    <td>
+                        <div class="item-subMenuApp unlock">
+                            <div class="item-subMenuApp-header">
+                                <a href="{{ url('Empresas') }}" title="Empleado" style="color: #FFFFFF;">
+                                    Empresas
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                    <td>'             /          '</td>
+                    <td>
+                        <div class="item-subMenuApp unlock">
+                            <div class="item-subMenuApp-header">
+                                <a href="{{ url('/Inicio') }}" title="Cerrar Sesion" style="color: #FFFFFF;">
+                                    Cerrar Sesion
                                 </a>
                             </div>
                         </div>

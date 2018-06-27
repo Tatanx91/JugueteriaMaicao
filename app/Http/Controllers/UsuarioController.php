@@ -2,18 +2,21 @@
 
 namespace Jugueteria\Http\Controllers;
 
+use Jugueteria\Usuario;
 use Illuminate\Http\Request;
+use App\Http\Requests;
 use Jugueteria\model\UsuariosModel;
+use Jugueteria\model\AdministradorModel;
 use Illuminate\Support\Facades\Redirect;
 use Jugueteria\http\Request\UsuarioFormReqest;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Mail;
 
 class UsuarioController extends Controller
 {
     public function __construct()
     {
-
+        $this->middleware(['auth:web' || 'auth:api']);
     }
 
 
@@ -34,9 +37,9 @@ class UsuarioController extends Controller
     }
     public function getIndex()
     {
-        $Usuario = UsuariosModel::orderBy('NombreUsuario', 'desc')->get();
+        $Usuario = UsuariosModel::join('administrador', 'administrador.IdUsuario', '=', 'usuario.ID')
+            ->orderBy('administrador.NombreUsuario', 'desc')->get();
         return view('Usuario.ConsultarUsuarios',compact('UsuariosModel'));
-        //return view('Usuario.ConfirmacionUsuario',compact('UsuariosModel'));
     }
     
 /*
@@ -80,28 +83,55 @@ class UsuarioController extends Controller
     {
 
         try{
-            
+
+
+           // $this->validate($request,[
+           //          'NombreUsuario'=>'Required',
+           //          'NumeroDocumento'=>'Required'
+           //      ]);
+
+            $token = $request['_token'];
+
             $data = $request->all();
-            $data['CodigoConf'] = str_random(25);
-            $data['Contrasena'] = md5($request['Contrasena']);
+            $data['CodigoConf'] = str_random(25);            
 
-
-            $IdUsuario = $request->input('IdUsuario');
+            $IdUsuario = $request->input('ID');
             $usuario = $IdUsuario == "" ? new UsuariosModel() : UsuariosModel::find($IdUsuario);
-            $usuario['Confirmado'] = 0;
-            $usuario['Estado'] = 1;
-            $usuario['CodigoConf'] = $data['CodigoConf'];            
+            $adinistradores = $IdUsuario == "" ? new AdministradorModel() : AdministradorModel::where('IdUsuario', $IdUsuario);
+
+            if($IdUsuario == null){
+
+                $nombreUsuario = $data['NombreUsuario'];
+                $numeroDocumento = $data['NumeroDocumento'];
+                $codigoConfirmacion = $data['CodigoConf'];
+
+                $largo = strlen($numeroDocumento);
+
+                $PrimeraContraseña = strtoupper(substr($nombreUsuario,0,1));
+                $PrimeraContraseña = $PrimeraContraseña .substr($numeroDocumento,$largo - 4,4);
+
+                $data['Contrasena'] = md5($PrimeraContraseña);
+
+                //envio correo de confirmacion
+                Mail::send('Correos.CorreoConfirmacion',['data' => $data],function($mensaje) use ($data){
+                    $mensaje->from('jonathandev123@gmail.com');
+                    $mensaje->to($data['Correo'], $data['NombreUsuario'])->subject('Confirmacion registro plataforma Maicao Gift Strore');
+                });
+
+                // return redirect::to('/registro/verificacion/'.$codigoConfirmacion);
+            }
 
             $usuario->fill($data);
             $usuario->save();
 
-            $token = $request['_token'];
+            $usuarios = UsuariosModel::where('CodigoConf', $data['CodigoConf']);
+            $usuario = $usuarios->first();
+            $IdUsuario = $usuario->ID;
+            $data['IdUsuario'] = $IdUsuario;
 
-            //envio correo de confirmacion
-            Mail::send('Correos.CodigoDeConfirmacion',['data' => $data],function($mensaje) use ($data){
-                $mensaje->from('jonathandev123@gmail.com');
-                $mensaje->to($data['Correo'], $data['NombreUsuario'])->subject('Por favor cofirmar el correo');
-            });
+            $adinistrador = $adinistradores->first();
+            $adinistrador->fill($data);
+            $adinistrador->save();           
             
 
         } catch (Exception $e) {
@@ -121,7 +151,8 @@ class UsuarioController extends Controller
                 "usuario" => $usuario
             ];
 
-        return view('Usuario.ConsultarUsuarios');
+        // return view('Usuario.ConsultarUsuarios');
+        return response()->json($retorno);
 
     }
 
@@ -133,13 +164,122 @@ class UsuarioController extends Controller
 
         if($existe == 1 > 0 and $usuario->Confirmado == 0)
         {
-            $id = $usuario->IdUsuario;
+            $IdUsuario = $usuario->ID;
             
-            return view('Usuario.CambioContrasena',compact('IdUsuario'));
+            return view('Usuario.CambioContrasena')->with(['IdUsuario' => $IdUsuario]);
         }
         else{
-            return redirect::to('datatableListUsuario');
+            // return redirect::to('datatableListUsuario');
+            return 'El usuario ya ha sido verificado, por favor ingresar por el login';
         }
+    }
+
+    public function CambiarContrasena(Request $request)
+    {
+        
+        $data = $request->all();
+        $IdUsuario = $request['IdUsuario'];
+        $ContrasenaAnt = md5($request['ContrasenaActual']);
+        $ContrasenaNueva = md5($request['NuevaContrasena']);
+
+        $Usuario = UsuariosModel::find($IdUsuario);
+        $ContrasenaActual = $Usuario['Contrasena'];        
+
+        if($ContrasenaActual <> $ContrasenaAnt){
+            return 'La contraseña anterior no es valida';
+        }
+        else if($ContrasenaNueva == $ContrasenaActual){
+            return 'La nueva contraseña debe ser distinta a la contraseña anterior';   
+        }
+        
+        $data['Contrasena'] = $ContrasenaNueva;
+        $data['Confirmado'] = 1;
+
+        // DB::update('update Usuarios set Confirmado = 1, Contrasena = "'.$ContrasenaNueva.'" where IdUsuario = '.$IdUsuario);
+        $Usuario->fill($data);
+        $Usuario->save();
+
+        return redirect::to('/Inicio');
+
+    }
+
+    public function EnviarRecuperarContrasena(Request $request)
+    {
+
+        $data = $request->all();
+        $correo = $request->input('Correo');
+        $usuarios = UsuariosModel::where('Correo', $correo);
+        $usuario = $usuarios->first();
+
+        $IdUsuario = $usuario["ID"];
+        $codigoConf = str_random(25);
+
+        DB::update('update Usuarios set Confirmado = 0, CodigoConf = "'.$codigoConf.'" where ID = '.$IdUsuario); 
+        
+        //envio correo de confirmacion
+        Mail::send('Correos.RecuperarContrasena',['codigoConf' => $codigoConf],function($mensaje) use ($data){
+            $mensaje->from('jonathandev123@gmail.com');
+            $mensaje->to($data['Correo'])->subject('Recuperacion de contraseña');
+        });
+
+        return redirect::to('/Inicio');
+
+    }
+
+    public function RecuperarContrasena($codigoConf)
+    {
+
+        $usuarios = UsuariosModel::where('CodigoConf', $codigoConf);
+        $existe = $usuarios->count();
+        $usuario = $usuarios->first();
+
+        if($existe == 1 > 0 and $usuario->Confirmado == 0)
+        {
+            $IdUsuario = $usuario->IdUsuario;
+            
+            return view('Usuario.RecuperarContrasena')->with(['ID' => $IdUsuario]);
+        }
+        else{
+            // return redirect::to('datatableListUsuario');
+            return 'El usuario ya ha sido verificado, por favor ingresar por el login';
+        }
+    }
+
+    public function RecuperarCambiarContrasena(Request $request)
+    {
+        $data = $request->all();
+        $IdUsuario = $request['ID'];
+        $ContrasenaNueva = md5($request['NuevaContrasena']);
+        $ContrasenaValida = md5($request['ReperirContrasena']);
+
+        $Usuario = UsuariosModel::find($IdUsuario);
+
+        if($ContrasenaNueva <> $ContrasenaValida){
+
+            return 'La contraseña debe ser igual';
+
+        }
+        else{
+            $Usuario['Confirmado'] = 1;
+            $Usuario['Contrasena'] = $ContrasenaNueva;
+        }
+
+        // DB::update('update Usuarios set Confirmado = 1, Contrasena = "'.$ContrasenaNueva.'" where IdUsuario = '.$IdUsuario);
+
+        $Usuario->fill($data);
+        $Usuario->save();
+
+        // return 'Contraseña actualizada, Por favor ingresar por el login';        
+
+        return redirect::to('/Inicio');
+
+    }
+
+    public function FormRecuperar()
+    {
+
+        $CodigoConf = str_random(25);
+        return view('Usuario.EmailRecuperarContrasena')->with(['CodigoConf' => $CodigoConf]);
     }
 
     public function datatableListUsuario(Request $request){
@@ -153,14 +293,15 @@ class UsuarioController extends Controller
         $columna = $request->get('columns');
         $orderBy = $columna[$sortColumnIndex]['data'];
 
-        $usuario = UsuariosModel:://table('usuarios')
-            select(
-                'IdUsuario',
-                'NumeroDocumento',
-                'NombreUsuario',
-                'ApellidoUsuario',
-                'Correo',
-                'TipoUsuario');
+        $usuario = UsuariosModel::join('tipoUsuario', 'tipoUsuario.ID' ,'=', 'usuario.IdTipoUsuario')
+            ->join('administrador', 'administrador.IdUsuario' ,'=', 'usuario.ID')
+            ->select(
+                'usuario.ID',
+                'administrador.NumeroDocumento',
+                'administrador.NombreUsuario',
+                'usuario.Correo',
+                'tipoUsuario.Nombre as TipoUsuario',
+                'administrador.Estado');
 
         $usuario  = $usuario->orderBy($orderBy, $sortColumnDir);  
 
@@ -211,7 +352,7 @@ class UsuarioController extends Controller
             'Contrasena'=>'Required'
         ]);
 
-        $usuario = Usuario::dbplus_find($idUsuario);
+        $usuario = UsuariosModel::find($idUsuario);
         $usuarioUpdate = $request->all();
         $usuario->update($usuarioUpdate);
 
@@ -222,12 +363,15 @@ class UsuarioController extends Controller
     {
         $titulo = "Usuario";
         $IdUsuario = $request->input('IdUsuario');
-        $usuario = $IdUsuario == "" ? new UsuariosModel() : UsuariosModel::find($idUsuario);
+        $usuario = $IdUsuario == "" ? new UsuariosModel() : UsuariosModel::find($IdUsuario);
 
-        //$genero = [null=>'Seleccione...'];
-        //$genero = Genero_model::orderBy('IdGenero','asc')->pluck('NombreGenero','IdGenero');
+        $data = $request->all();
 
-        $view = view('Usuario.FormUsuario')->with(['usuario' => $usuario, 'titulo' => $titulo]);
+        $IdUsuario = $request->input('IdUsuario');
+        $adinistradores = AdministradorModel::where('IdUsuario', $IdUsuario);
+        $administrador = $adinistradores->first();
+
+        $view = view('Usuario.FormUsuario')->with(['usuario' => $usuario, 'administrador' => $administrador, 'titulo' => $titulo]);
 
         if($request->ajax()){
             return $view->renderSections()['content_modal'];
@@ -239,14 +383,20 @@ class UsuarioController extends Controller
     public function cambiaEstadoUsuario(Request $request)
     {
         try {
-            
+
             $IdUsuario = $request->input('IdUsuario');
-            $estado = $request->input('estado');
+            $estado = $request->input('Estado');
+
+            // DB::update('update Usuarios set Estado = '.$estado.' where IdUsuario = '.$IdUsuario);
+
             $usuario = UsuariosModel::find($IdUsuario);
-            $usuario['estado'] = $estado;
+            $Administradores = AdministradorModel::where('IdUsuario', $IdUsuario);
+            $Administrador = $Administradores->first();
+
+            $Administrador['Estado'] = $estado;
             $data = $request->all();
-            $usuario->fill($data);
-            $usuario->save();
+            $Administrador->fill($data);
+            $Administrador->save();
     
         } catch (Exception $e) {
             return response([
@@ -254,22 +404,18 @@ class UsuarioController extends Controller
                     "error" => $e->getMessage()
                 ]);
         }
-        
-        // return response([
-        //         "success" => true,
-        //         "mensaje" => "Datos guardados correctamente",
-        //         //"request" => $request->all(),
-        //         "usuario" => $usuario
-        //     ]);
 
         $retorno = [
         "success" => true,
-        "mensaje" => "Datos guardados correctamente",
+        "mensaje" => "Estado actualizado",
         //"request" => $request->all(),
         "usuario" => $usuario
         ];
 
-        return view('Usuario.ConsultarUsuarios');
+        return response()->json($retorno);
+        // return view('Usuario.ConsultarUsuarios');
+
+
     }
 
     public function destroy()

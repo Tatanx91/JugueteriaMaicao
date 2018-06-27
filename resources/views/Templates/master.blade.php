@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Jugueteria Maicao</title>
+    <title>Maicao Gift Store</title>
     <script src="{{asset('js/jquery/jquery.min.js')}}"></script>
     <link rel="stylesheet" href="{{ asset('css/booststrap/css/bootstrap.css') }}">
     <script src="{{asset('css/booststrap/js/bootstrap.min.js')}}"></script>

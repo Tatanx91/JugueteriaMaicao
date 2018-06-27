@@ -12,82 +12,58 @@ header("Pragma: no-cache");
 
     <head>
 
-        <title></title>
+        <title>Maicao Gift Store</title>
+        <script src="{{asset('css/booststrap/js/bootstrap.min.js')}}"></script>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-
-        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
-
-         <!-- Compiled and minified CSS -->
-
-        <!--<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />-->
-
-
-
-        
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-
-    <title>Maicao Gift Store</title>
-    <script src="{{asset('js/jquery/jquery.min.js')}}"></script>
-    <link rel="stylesheet" href="{{ asset('css/booststrap/css/bootstrap.css') }}">
-    <script src="{{asset('css/booststrap/js/bootstrap.min.js')}}"></script>
+        <div id="iniciohead" class="navbar navbar-inverse navbar-fixed-top" style="z-index:4; background-color:#295c93 !important; border-color: #295c93;margin-bottom: 5px !important">
+        </div>
 
     </head>
 
     <body>
+        <center>
+        
+            <div class="">
 
-        <div class="row">
-            <center>
-                <div class="container" >
+                    {!! Form::open(['route' => 'login', 'method'=> 'POST']) !!}
+                        {{  Form::token() }}
 
-                    <div class="">
-                        <!--
-<form method="POST" action="http://127.0.0.1:8000/login" accept-charset="UTF-8" id="form-inicio-sesion" class="navbar-form navbar-left" type="POST">-->
-    {!! Form::open(['route' => 'login', 'method'=> 'POST']) !!}
-        {{  Form::token() }}
-
-        <img src="{{asset('Imagenes/Logo_web_Maicao.png')}}" style="width: 128px; height: 128px" />
-        <div class="form-group">
-            <i class="fa fa-at prefix" aria-hidden="true"></i>
-            {!!Form::text("Correo",null,["id"=>"Correo"])!!}
-            {!!Form::label("Correo","Correo electrónico")!!}
-        </div>
+                        <img src="{{asset('Imagenes/Logo_web_Maicao.png')}}" style="width: 128px; height: 128px" />
+                        <div class="form-group">
+                            <i class="fa fa-at prefix" aria-hidden="true"></i>
+                            {!!Form::text("Correo",null,["id"=>"Correo"])!!}
+                            {!!Form::label("Correo","Correo electrónico")!!}
+                        </div>
 
 
 
-        <div class="form-group">
-            <i class="fa fa-lock prefix" aria-hidden="true"></i>
-            {!!Form::password("Contrasena",["id"=>"Contrasena"])!!}
-            {!!Form::label("Contrasena","Contraseña")!!}
-        </div>
-<!--<button>prueba</button>
-</form>-->
+                        <div class="form-group">
+                            <i class="fa fa-lock prefix" aria-hidden="true"></i>
+                            {!!Form::password("Contrasena",["id"=>"Contrasena"])!!}
+                            {!!Form::label("Contrasena","Contraseña")!!}
+                        </div>
 
-        <div id="contenedor-boton-inicio">
+                        <div id="contenedor-boton-inicio">
 
-            <!--<a class="btn btn-info btn-md" id="btn-inicio-sesion" style="margin-top: 30px;" method="post" type="submit">Ingresar</a>-->
-            {!! Form::button('<i class = "btn btn-info btn-md"></i> Submit', array('type' => 'submit', 'class' => 'button')) !!}
-            {{--  'onclick' => 'return confirm("are you shure?")')) !!}--}}
+                            <!--<a class="btn btn-info btn-md" id="btn-inicio-sesion" style="margin-top: 30px;" method="post" type="submit">Ingresar</a>-->
+                            {!! Form::button('<i class = "btn btn-info btn-md"></i> Submit', array('type' => 'submit', 'class' => 'button')) !!}
+                            {{--  'onclick' => 'return confirm("are you shure?")')) !!}--}}
 
-        </div>
+                        </div>
 
-        <a href="{{url('/password/email')}}" class="col s12 blue-text text-darken-4 center" style="margin-top: 15px !important; font-size: small;">¿Olvidaste la contraseña?</a>
-        {!!Form::hidden(null,url("/"),["id"=>"base_url"])!!}
-    {!! Form::close() !!}
+                        <a href="{{url('/Contrasena/FormRecuperar')}}" class="col s12 blue-text text-darken-4 center" style="margin-top: 15px !important; font-size: small;">¿Olvidaste la contraseña?</a>
+                        {!!Form::hidden(null,url("/"),["id"=>"base_url"])!!}
+                    {!! Form::close() !!}
 
-                    </div>
-
-                </div>
+            </div>
+            <div>
 
 
-                <p class="center" style="font-size: small;color: orange !important;"><a style="color: #0d47a1;" href="{{url("/")}}">Jugueteria Maicao</a> recomienda su versión movil usando Google Chrome</p>
-                <p class="center" style="font-size: small;color: orange !important;">Copyright © {{date("Y")}} </p>
-            </center>
-        </div>
-
-
+                    <p class="center" style="font-size: small;color: orange !important;"><a style="color: #0d47a1;" href="{{url("/")}}">Maicao Gift Store</a> recomienda su versión movil usando Google Chrome</p>
+                    <p class="center" style="font-size: small;color: orange !important;">Copyright © {{date("Y")}} </p>
+                
+            </div>
+        </center>
 
     </body>
 

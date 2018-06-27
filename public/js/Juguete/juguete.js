@@ -15,13 +15,13 @@ function cargarTablaJuguete(){
 		"columns":[
 			// {"data": "IdJuguete", "className": "text-center"},
 			{"data": "NumeroReferencia", "className": "text-center"},
-			{"data": "NombreJuguete", "className": "text-center"},
+			{"data": "Nombre", "className": "text-center"},
 			{"data": "Dimensiones", "className": "text-center"},
 			{"data": "EdadInicial", "className": "text-center"},
 			{"data": "EdadFinal", "className": "text-center"},
 			{"data": "cantidad", "className": "text-center"},
 			{"data": "descripcion", "className": "text-center"},
-			{"data": "NombreGenero", "className": "text-center"},
+			{"data": "Nombre", "className": "text-center"},
 			{"data": null, "defaultContent": "", "className": "text-center ","orderable": false },
 			{"data": null, "defaultContent": "", "className": "text-center ","orderable": false },
 			{"data": null, "defaultContent": "", "className": "text-center ","orderable": false }
@@ -36,9 +36,9 @@ function cargarTablaJuguete(){
 				clase_estado = "fa-toggle-on";
 			}
             		$(row).attr('id','tr_'+index);
-					$("td", row).eq(8).html("<span style='cursor: pointer;' class='fa fa-edit fa-2x' data-id='"+data.IdJuguete+"' id='EDITAR' title='Editar juguete'></span>");
-					$("td", row).eq(9).html("<span style='cursor: pointer;' id=estado_"+data.IdJuguete+" class='fa "+clase_estado+" fa-2x' onclick=activarDessactivarJuguete('"+data.IdJuguete+"','"+data.estado+"'); title='"+estado+" juguete'></span>")
-					$("td", row).eq(10).html("<a href='"+$("#APP_URL").val() +"/Galeria/getGaleriaImg?Id="+data.IdJuguete+"'><span style='cursor: pointer;' class='fa fa-camera fa-2x'title='Galeria de Imagenes'  ></span><a>")
+					$("td", row).eq(8).html("<span style='cursor: pointer;' class='fa fa-edit fa-2x' data-id='"+data.ID+"' id='EDITAR' title='Editar juguete'></span>");
+					$("td", row).eq(9).html("<span style='cursor: pointer;' id=estado_"+data.ID+" class='fa "+clase_estado+" fa-2x' onclick=activarDessactivarJuguete('"+data.ID+"','"+data.estado+"'); title='"+estado+" juguete'></span>")
+					$("td", row).eq(10).html("<a href='"+$("#APP_URL").val() +"/Galeria/getGaleriaImg?Id="+data.ID+"'><span style='cursor: pointer;' class='fa fa-camera fa-2x'title='Galeria de Imagenes'  ></span><a>")
 				//<button type='button' onclick=\"habilitar_deshabilitar_juguete('"+data.IdJuguete+"', 'deshabilitar')\" class='btn btn-primary' ></button>
 				//<button type='button' data-id='"+data.IdJuguete+"' id='EDITAR' class='btn btn-primary' data-toggle='modal' data-placement='bottom' data-target='#popup' title='Editar registro'><span class='fa fa-edit'></span></button>
 				//
@@ -78,7 +78,7 @@ function activarDessactivarJuguete(id,estado){
 	}
 
 	var url = $("#APP_URL").val() + "/juguete/cambiaEstado/";
-	$.post(url,{estado : estado_update,IdJuguete : id,_token:token})
+	$.post(url,{estado : estado_update,ID : id,_token:token})
 	.done(function(data){
 		cargarTablaJuguete()
 		$("#mensaje").html('<div class="alert alert-success alert-dismissible div-msg" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><b>'+data.mensaje+'</b></center></div>')		

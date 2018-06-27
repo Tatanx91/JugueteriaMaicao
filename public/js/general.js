@@ -20,6 +20,16 @@
         });
      })
 
+    $(document).on('click','#EDITARUSUARIO',function(event){
+        event.stopPropagation();
+        var id_modulo=$("#id_modulo").val();
+        IdUsuario=$(this).data('id');
+        $.post($("#APP_URL").val()+"/"+id_modulo+"/postForm"+id_modulo,{ "_token" :  $("#_MTOKEN").val(), "IdUsuario" : IdUsuario },function(data){
+             $('#popup').empty().append($(data));
+             $('#popup').modal('show');
+        });
+     })
+
 function validaCampos(form){
     $("#form-"+form).find('div.div_requerido, :input, input:text, input:password, input:file, select, textarea,input:radio').css({'border':'1px solid #ccc'});           
     

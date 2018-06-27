@@ -11,4 +11,9 @@ class InicioController extends Controller
 
             return view('Templates.master');
     }
+
+ 	public function indexMenu()
+    {
+        return view('Templates.Menu');
+    }
 }

@@ -43,11 +43,11 @@ class JugueteController extends Controller
         $columna = $request->get('columns');
         $orderBy = $columna[$sortColumnIndex]['data'];
         
-        $juguete = Juguete_model::join('genero','genero.IdGenero','=','juguete.IdGenero')
+        $juguete = Juguete_model::join('genero','genero.ID','=','juguete.IdGenero')
          ->select(
-                'juguete.IdJuguete',
+                'juguete.ID',
                 'juguete.NumeroReferencia',
-                'juguete.NombreJuguete',
+                'juguete.Nombre',
                 'juguete.Dimensiones',
                 'juguete.EdadInicial',
                 'juguete.EdadFinal',
@@ -55,8 +55,8 @@ class JugueteController extends Controller
                 'juguete.descripcion',
                 'juguete.cantidad',
                 'juguete.estado',
-                'genero.IdGenero',
-                'genero.NombreGenero');
+                'genero.ID',
+                'genero.Nombre');
                                     //->orderBy("IdJuguete", "desc");//
 
         $juguete  = $juguete->orderBy($orderBy, $sortColumnDir);  
@@ -65,15 +65,15 @@ class JugueteController extends Controller
         //BUSCAR            
             if($search['value'] != null){
                 $juguete = $juguete->whereRaw(
-                        "(IdJuguete LIKE '%".$search["value"]."%' OR ". 
+                        "(ID LIKE '%".$search["value"]."%' OR ". 
                          "NumeroReferencia LIKE '%". $search['value'] . "%' OR " .
-                         "NombreJuguete LIKE '%". $search['value'] . "%' OR " .
+                         "juguete.Nombre LIKE '%". $search['value'] . "%' OR " .
                          "Dimensiones LIKE '%". $search['value'] . "%' OR " .
                          "EdadInicial LIKE '%". $search['value'] . "%' OR " .
                          "EdadFinal LIKE '%". $search['value'] . "%' OR " .
                          "descripcion LIKE '%". $search['value'] . "%' OR " .
                          "cantidad LIKE '%". $search['value'] . "%' OR " .
-                         "genero.NombreGenero LIKE '%". $search['value']. "%')");
+                         "genero.Nombre LIKE '%". $search['value']. "%')");
             }
         
         $parcialRegistros = $juguete->count();
@@ -105,7 +105,7 @@ class JugueteController extends Controller
             
             $IdJuguete = $request->input('IdJuguete');
             $juguete = $IdJuguete == "" ? new Juguete_model() : Juguete_model::find($IdJuguete);
-            $juguete['Imagenes'] = 'prueba';
+            // $juguete['Imagenes'] = 'prueba';
             $juguete['estado'] = 1;
             $data = $request->all();
             $juguete->fill($data);
@@ -129,10 +129,11 @@ class JugueteController extends Controller
                 "success" => true,
                 "mensaje" => "Datos guardados correctamente",
                 //"request" => $request->all(),
-                "usuario" => $juguete
+                "juguete" => $juguete
             ];
 
-        return view('Juguete.index');
+        // return view('Juguete.index');
+        return response()->json($retorno);
     }
 
     /**
@@ -148,7 +149,7 @@ class JugueteController extends Controller
         $juguete = $jugueteID == "" ? new Juguete_model() : Juguete_model::find($jugueteID);
 
         $genero = [null=>'Seleccione...'];
-        $genero = Genero_model::orderBy('IdGenero','asc')->pluck('NombreGenero','IdGenero');
+        $genero = Genero_model::orderBy('ID','asc')->pluck('Nombre','ID');
 
         $view = view('Juguete.formJuguete')->with(['juguete' => $juguete, 'titulo' => $titulo,'genero'=>$genero]);
 
@@ -164,7 +165,7 @@ class JugueteController extends Controller
     {
         try {
             
-            $IdJuguete = $request->input('IdJuguete');
+            $IdJuguete = $request->input('ID');
             $estado = $request->input('estado');
             $juguete = Juguete_model::find($IdJuguete);
             $juguete['estado'] = $estado;
@@ -179,12 +180,21 @@ class JugueteController extends Controller
                 ]);
         }
         
-        return response([
-                "success" => true,
-                "mensaje" => "Datos guardados correctamente",
-                //"request" => $request->all(),
-                "juguete" => $juguete
-            ]);
+        // return response([
+        //         "success" => true,
+        //         "mensaje" => "Estado actualizado",
+        //         //"request" => $request->all(),
+        //         "juguete" => $juguete
+        //     ]);
+
+      $retorno = [
+            "success" => true,
+            "mensaje" => "Datos guardados correctamente",
+            //"request" => $request->all(),
+            "juguete" => $juguete
+        ];
+
+        return response()->json($retorno);
     }
 
     /**

@@ -8,7 +8,7 @@
 
 
     {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
-    <title>Jugueteria Maicao</title>
+    <title>Maicao Gift Store</title>
 
 
 

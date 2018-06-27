@@ -3,6 +3,8 @@
 namespace Jugueteria\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Jugueteria\model\UsuariosModel;
 use Illuminate\Support\Facades\Auth;
 use Jugueteria\Http\Controllers\Controller;
 use JWTAuth;
@@ -27,34 +29,51 @@ class AuthController extends Controller
      */
     public function login()
     {
+
         $credentials = request(['Correo', 'Contrasena']);
         $Contrasena = md5($credentials['Contrasena']);
         $credentials['Contrasena'] =$Contrasena;
+
+        // $usuarios = UsuariosModel::where('Correo', $credentials['Correo']);
+        $usuarios = UsuariosModel::join('tipoUsuario', 'tipoUsuario.ID' ,'=', 'usuario.IdTipoUsuario')
+            ->join('administrador', 'administrador.IdUsuario' ,'=', 'usuario.ID')
+            ->where('usuario.Correo', $credentials['Correo']);
+        $existe = $usuarios->count();
+        $usuario = $usuarios->first();
+
+        if($existe > 0 and $usuario['Confirmado'] == 0){
+
+            $nombreUsuario = $usuario['NombreUsuario'];
+            $numeroDocumento = $usuario['NumeroDocumento'];
+            $codigoConfirmacion = $usuario['CodigoConf'];
+
+            $largo = strlen($numeroDocumento);
+
+            $PrimeraContraseña = strtoupper(substr($nombreUsuario,0,1));
+            $PrimeraContraseña = md5($PrimeraContraseña .substr($numeroDocumento,$largo - 4,4));
+
+            if($PrimeraContraseña == $Contrasena)
+            {
+                return redirect::to('/registro/verificacion/'.$codigoConfirmacion);
+            }
+            else
+            {
+                return 'La contraseña inicial asignada no es correcta';
+            }
+
+            
+        }
 
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        //return $this->respondWithToken($token);
-        return view('Usuario.ConsultarUsuarios',compact('UsuariosModel'));
-
-        // $Correo = $request['Correo'];
-        // //$Contrasena = bcrypt($request['Contrasena']);
-        // $Contrasena = md5($request['Contrasena']);
-
-        // $credentials = request(['Correo', 'Contrasena']);
-        // $credentials['Contrasena'] = $Contrasena;
-    }
-
-    public function CambiarContrasena(Request $request, $IdUsuario)
-    {
-        $Usuario = UsuariosModel::find($IdUsuario);
-        $Usuario->Contrasena =  md5($request['Contrasena']);
-        $Usuario->Confirmado = 1;
-        $Usuario->save();
-
-        return redirect::to('/Inicio');
-
+        // return $this->respondWithToken($token);
+        // return view('Usuario.ConsultarUsuarios');
+        // return view('Juguete.Index');
+        // return view('Templates.Menu');
+        // return view('Mensajes.MensajeErrorLogin');
+        return redirect::to('/inicio/menu');
     }
 
     /**
@@ -74,7 +93,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
+        \auth()->logout();
 
         return response()->json(['message' => 'Successfully logged out']);
     }

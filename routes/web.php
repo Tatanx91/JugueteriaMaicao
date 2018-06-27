@@ -18,23 +18,43 @@ Route::get('/', function () {
 */
 //Route::resourses('Usuarios'=>'UsuarioController');
 //Route::get('/','UsuarioController@index');
-Route::get('Inicio','InicioController@index');
-Route::get('Inicio', array(
+Route::get('/','InicioController@index');
+Route::get('/', array(
     'as' => 'Inicio',
     'uses' => 'InicioController@index'
 ));
 
-Route::get('Usuarios','UsuarioController@getIndex');
-Route::get('/login','AuthController@login');
+// Route::group(['prefix' => 'seguridad', 'middleware' => 'seguridad', 'namespace' => 'jugueteria'], function(){
+    
+//     Route::get('Usuarios','UsuarioController@getIndex');
+//     Route::get('/juguete','JugueteController@index');
+// });
 
+Route::get('/Usuarios','UsuarioController@getIndex');
+Route::get('/Juguete','JugueteController@index');
+
+//Autenticacion
+// Route::get('/login','AuthController@login');
 Route::post('/login',[
-	'uses' => 'AuthController@login',
-	'as' => 'login'
+    'uses' => 'AuthController@login',
+    'as' => 'login'
 ]);
 
+Route::get('/inicio/menu',[
+    'as' => 'indexMenu',
+    'uses' => 'InicioController@indexMenu'
+]);
+
+
+
 Route::post('/CambiarContrasena',[
-    'uses' => 'AuthController@CambiarContrasena',
+    'uses' => 'UsuarioController@CambiarContrasena',
     'as' => 'CambiarContrasena'
+]);
+
+Route::get('/Contrasena/FormRecuperar',[
+    'uses' => 'UsuarioController@FormRecuperar',
+    'as' => 'FormRecuperarContrasena'
 ]);
 
 //Rutas Usuarios
@@ -82,7 +102,7 @@ Route::post('/usuario/postFormusuario',[
 // ->except([
 //     'postStore', 'datatableListJuguete'
 // ]);
-Route::get('/juguete','JugueteController@index');
+
 Route::get('/juguete/postFormjuguete', array(
     'as' => 'postFormjuguete',
     'uses' => 'JugueteController@postFormjuguete'
@@ -108,14 +128,28 @@ Route::post('/juguete/cambiaEstado',[
     'uses' => 'JugueteController@cambiaEstado'
 ]);
 
-<<<<<<< HEAD
-
 //Rutas correos
 Route::get('/registro/verificacion/{CodigoConf}', array(
     'as' => 'verificacion',
     'uses' => 'UsuarioController@VerificarUsuario'
 ));
-=======
+
+Route::post('/Contrasena/EmailRecuperarContrasena', array(
+    'as' => 'EmailRecuperar',
+    'uses' => 'UsuarioController@EnviarRecuperarContrasena'
+));
+
+Route::get('/Contrasena/RecuperarContrasena/{CodigoConf}', array(
+    'as' => 'RecuperarContrasena',
+    'uses' => 'UsuarioController@RecuperarContrasena'
+));
+
+Route::post('/Contrasena/RecuperarCambiarContrasena', array(
+    'as' => 'RecuperarCambiarContrasena',
+    'uses' => 'UsuarioController@RecuperarCambiarContrasena'
+));
+
+
 Route::get('/Galeria/getGaleriaImg', array(
     'as' => 'getGaleriaImg',
     'uses' => 'GaleriaImgController@getGaleriaImg'
@@ -132,5 +166,3 @@ Route::post('/Galeria/CargarContenedorImg', array(
     'as' => 'CargarContenedorImg',
     'uses' => 'GaleriaImgController@CargarContenedorImg'
 ));
-
->>>>>>> f65405d166db4216d4db280b7dfcdd030f1a1b61

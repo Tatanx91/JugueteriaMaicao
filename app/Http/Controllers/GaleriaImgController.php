@@ -12,8 +12,8 @@ class GaleriaImgController extends Controller
     public function getGaleriaImg(Request $request)
     {
         $jugueteID = $request->input('Id');
-        $img = rel_juguete_img::join('juguete','juguete.IdJuguete','=','rel_juguete_img.IdJuguete')
-         ->select('rel_juguete_img.*')->where('rel_juguete_img.IdJuguete','=',$jugueteID)->get();
+        $img = rel_juguete_img::join('juguete','juguete.ID','=','jugueteimg.IdJuguete')
+         ->select('jugueteimg.*')->where('jugueteimg.IdJuguete','=',$jugueteID)->get();
         $juguete = $jugueteID == "" ? new Juguete_model() : Juguete_model::find($jugueteID);
         $countimg = $img->count();
            return view('Galeria.index') ->with([
@@ -35,7 +35,7 @@ class GaleriaImgController extends Controller
 		        $path = public_path().'/uploads/ImgJuguete/'.$jugueteID.'/'; 
 
 	 			if(($img['idJugueteImg'] != "" || $img['idJugueteImg'] != null)) {
-	                $filename = public_path().'/uploads/ImgJuguete/'.$juguete['IdJuguete'].'/'.$juguete['idJugueteImg'];
+	                $filename = public_path().'/uploads/ImgJuguete/'.$juguete['ID'].'/'.$juguete['idJugueteImg'];
 	                File::delete($filename);
 	            }
 
@@ -57,13 +57,13 @@ class GaleriaImgController extends Controller
 		            $img->fill($data);
 		            $img->save();
                 	$fileName = str_replace(" ", "_", $file->getClientOriginalName());
-                    $file->move($path, 'img_ImgJuguete_'.$img['idJugueteImg'].'.'.$extension);             
-		            $juguete['Imagenes'] = 'img_ImgJuguete_'.$img['idJugueteImg'].'.'.$extension;
+                    $file->move($path, 'jugueteimg'.$img['idJugueteImg'].'.'.$extension);             
+		            $juguete['Imagenes'] = 'jugueteimg'.$img['idJugueteImg'].'.'.$extension;
             		$juguete['estado'] = 1;
 		            $juguete->fill($data);
 		            $juguete->save();
 
-					$img['Imagen']= 'img_ImgJuguete_'.$img['idJugueteImg'].'.'.$extension;
+					$img['Imagen']= 'jugueteimg'.$img['idJugueteImg'].'.'.$extension;
 					$img->fill($data);
 		            $img->save();
                 }else{
