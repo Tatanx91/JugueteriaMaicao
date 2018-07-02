@@ -4,11 +4,13 @@ namespace Jugueteria\model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Genero_model extends Model
+class Convenio_Model extends Model
 {
     protected $primaryKey = "ID";
-    protected $table = "genero";
+    protected $table = "Convenio";
     protected $fillable = [
-		'Nombre'
+		'IdEmpresa',
+		'FechaInicio',
+		'FechaFin'
     ];
 }

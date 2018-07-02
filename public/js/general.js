@@ -29,6 +29,16 @@
              $('#popup').modal('show');
         });
      })
+	 
+	$(document).on('click','#MASIVO',function(event){
+    	event.stopPropagation();
+        var id_modulo=$("#id_modulo").val();
+        Id=$(this).data('id');
+        $.post($("#APP_URL").val()+"/"+id_modulo+"/Masivo"+id_modulo,{ "_token" :  $("#_MTOKEN").val(), "Id" : Id },function(data){
+	         $('#popup').empty().append($(data));
+             $('#popup').modal('show');
+        });
+     })
 
 function validaCampos(form){
     $("#form-"+form).find('div.div_requerido, :input, input:text, input:password, input:file, select, textarea,input:radio').css({'border':'1px solid #ccc'});           
@@ -112,3 +122,88 @@ function cuenta(numero_caracteres, campo_caracteres, numero_permitido) {
         $("#" + id).text(numero_caracteres);
     }
 }
+
+
+function confirmacion(texto){
+        var r = confirm(texto);
+        if (r == true) {
+        	return true;
+        } else {
+        	return false;
+        }
+}
+
+function validaForm(form){
+$("#form-"+form).find('.requiere').css({'border':'1px solid #ccc'});           
+var result = true;
+ $.each($("#form-"+form).find('.requiere'),function(key,val){   
+	//$("#form-"+form).find('.requiere').css({'border':'1px solid red'});    
+	///if(val.attr('type'))
+	var id_campo = $(val).attr('id');
+	console.log(id_campo)
+	if($(val).is('input') ) {
+		if($(val).length <= 0 || $(val).val() ==''|| $(val).val() == 0){
+			$(val).css({'border':'1px solid red'});
+			result = false;
+			return false;
+		}
+	}
+	if($(val).is("select") ) {
+		console.log($(val).val())
+		if($(val).val() == 0 || $(val).val() == ""){
+			$(val).css({'border':'1px solid red'});
+			result = false;
+			return false;
+		}
+	}
+	if($(val).is('textarea') ) {
+		if($(val).length <= 0 || $(val).val() ==''){
+			$(val).css({'border':'1px solid red'}); 
+			result = false;
+			return false;
+		}
+	}
+ 	
+ });
+ return result;
+//return true;
+	 // $("#form-"+form).find('div.div_requerido, :input, input:text, input:password, input:file, select, textarea,input:radio').css({'border':'1px solid #ccc'});           
+
+  //   $.each($("#form-"+form).find('div.div_requerido, :input, input:text, input:password, input:file, select, textarea,input:radio'),function(key,val){           
+        
+  //       var id =$(val).attr('id');
+
+  //       $("#"+id).css({'border':'1px solid #ccc'})
+  //       $("#"+id+"_error").remove();
+  //   });
+	
+}
+
+function cargaDatepicker() { 
+    $.each($(".Datepicker"), function () {
+        var id = $(this).attr('id');      
+
+	alert(id)  
+        $('#' + id).datetimepicker({
+            ignoreReadonly: true,            
+            format: 'YYYY/MM/DD',
+            minDate: 'now'
+        });
+    });
+}
+
+//function validarCorreo(id) {
+//    
+//    var mensaje='';
+//    if($("#"+id).val(). ('@', 0) == -1 || $("#"+id).val().indexOf('.', 0) == -1) {
+//        mensaje = "<label style='color: red'>Introduzca un correo válido</label>";
+//        $('#mensaje_'+id).html(mensaje);
+//        $('#'+id).css('border-color','red');
+//        return false;
+//    }else{
+//        $('#mensaje_'+id).html(mensaje);
+//        $('#'+id).css('border-color','');
+//        return true;
+//    }
+//
+//}//

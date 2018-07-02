@@ -62,7 +62,7 @@
                     <td>
                         <div class="item-subMenuApp unlock">
                             <div class="item-subMenuApp-header">
-                                <a href="{{ url('Empresas') }}" title="Empleado" style="color: #FFFFFF;">
+                                <a href="{{ url('Empresa') }}" title="Empresa" style="color: #FFFFFF;">
                                     Empresas
                                 </a>
                             </div>

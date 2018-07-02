@@ -367,9 +367,15 @@ class UsuarioController extends Controller
 
         $data = $request->all();
 
-        $IdUsuario = $request->input('IdUsuario');
-        $adinistradores = AdministradorModel::where('IdUsuario', $IdUsuario);
-        $administrador = $adinistradores->first();
+        if($usuario != null and $usuario->count > 0){
+            return $usuario;
+            $adinistradores = AdministradorModel::where('IdUsuario', $IdUsuario);
+            $administrador = $adinistradores->first();    
+        }
+        else {
+
+            $administrador = new AdministradorModel();
+        }
 
         $view = view('Usuario.FormUsuario')->with(['usuario' => $usuario, 'administrador' => $administrador, 'titulo' => $titulo]);
 
