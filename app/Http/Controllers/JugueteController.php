@@ -43,20 +43,20 @@ class JugueteController extends Controller
         $columna = $request->get('columns');
         $orderBy = $columna[$sortColumnIndex]['data'];
         
-        $juguete = Juguete_model::join('genero','genero.ID','=','juguete.IdGenero')
+        $juguete = Juguete_model::join('Genero','Genero.ID','=','Juguete.IdGenero')
          ->select(
-                'juguete.ID',
-                'juguete.NumeroReferencia',
-                'juguete.Nombre',
-                'juguete.Dimensiones',
-                'juguete.EdadInicial',
-                'juguete.EdadFinal',
-                'juguete.IdGenero',
-                'juguete.descripcion',
-                'juguete.cantidad',
-                'juguete.estado',
-                'genero.ID',
-                'genero.Nombre');
+                'Juguete.ID',
+                'Juguete.NumeroReferencia',
+                'Juguete.Nombre',
+                'Juguete.Dimensiones',
+                'Juguete.EdadInicial',
+                'Juguete.EdadFinal',
+                'Juguete.IdGenero',
+                'Juguete.descripcion',
+                'Juguete.cantidad',
+                'Juguete.estado',
+                'Genero.ID',
+                'Genero.Nombre');
                                     //->orderBy("IdJuguete", "desc");//
 
         $juguete  = $juguete->orderBy($orderBy, $sortColumnDir);  
@@ -106,7 +106,7 @@ class JugueteController extends Controller
             $IdJuguete = $request->input('IdJuguete');
             $juguete = $IdJuguete == "" ? new Juguete_model() : Juguete_model::find($IdJuguete);
             // $juguete['Imagenes'] = 'prueba';
-            $juguete['estado'] = 1;
+            $juguete['Estado'] = 1;
             $data = $request->all();
             $juguete->fill($data);
             $juguete->save();
@@ -168,7 +168,7 @@ class JugueteController extends Controller
             $IdJuguete = $request->input('ID');
             $estado = $request->input('estado');
             $juguete = Juguete_model::find($IdJuguete);
-            $juguete['estado'] = $estado;
+            $juguete['Estado'] = $estado;
             $data = $request->all();
             $juguete->fill($data);
             $juguete->save();

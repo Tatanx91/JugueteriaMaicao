@@ -35,9 +35,9 @@ class AuthController extends Controller
         $credentials['Contrasena'] =$Contrasena;
 
         // $usuarios = UsuariosModel::where('Correo', $credentials['Correo']);
-        $usuarios = UsuariosModel::join('tipoUsuario', 'tipoUsuario.ID' ,'=', 'usuario.IdTipoUsuario')
-            ->join('administrador', 'administrador.IdUsuario' ,'=', 'usuario.ID')
-            ->where('usuario.Correo', $credentials['Correo']);
+        $usuarios = UsuariosModel::join('TipoUsuario', 'TipoUsuario.ID' ,'=', 'Usuario.IdTipoUsuario')
+            ->join('Administrador', 'Administrador.IdUsuario' ,'=', 'Usuario.ID')
+            ->where('Usuario.Correo', $credentials['Correo']);
         $existe = $usuarios->count();
         $usuario = $usuarios->first();
 

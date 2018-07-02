@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Empresa_Model extends Model
 {
     protected $primaryKey = "ID";
-    protected $table = "empresa";
+    protected $table = "Empresa";
     protected $fillable = [
 		'IdUsuario',
 		'Nombre',

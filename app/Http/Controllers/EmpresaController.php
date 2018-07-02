@@ -30,18 +30,18 @@ class EmpresaController extends Controller
         $length = $request->get('length');
         $start = $request->get('start');
         $columna = $request->get('columns');
-        $orderBy = $columna[$sortColumnIndex]['data'] == 'ID' ? 'empresa.ID' :  $columna[$sortColumnIndex]['data'];
+        $orderBy = $columna[$sortColumnIndex]['data'] == 'ID' ? 'Empresa.ID' :  $columna[$sortColumnIndex]['data'];
         
-        $empresas = Empresa_Model::join('tipodocumento','tipodocumento.ID','=','empresa.IdTipoDocumento')
+        $empresas = Empresa_Model::join('TipoDocumento','TipoDocumento.ID','=','Empresa.IdTipoDocumento')
          ->select(
-                'empresa.ID',
-                'empresa.IdUsuario',
-                'empresa.Nombre',
-                'empresa.IdTipoDocumento',
-                'tipodocumento.Nombre AS NombreTipoDocumento',
-                'empresa.NumeroDocumento',
-                'empresa.Logo',
-                'empresa.Estado');
+                'Empresa.ID',
+                'Empresa.IdUsuario',
+                'Empresa.Nombre',
+                'Empresa.IdTipoDocumento',
+                'TipoDocumento.Nombre AS NombreTipoDocumento',
+                'Empresa.NumeroDocumento',
+                'Empresa.Logo',
+                'Empresa.Estado');
                 //->orderBy("IdEmpresa", "desc");
 
         $empresas = $empresas->orderBy($orderBy, $sortColumnDir);  
@@ -78,23 +78,40 @@ class EmpresaController extends Controller
             $IdEmpresa = $request->input('ID');
             $empresas = $IdEmpresa == "" ? new Empresa_Model() : Empresa_Model::find($IdEmpresa);
             $empresas['Estado'] = 1;
+            $empresas['IdUsuario'] = 1;
             $data = $request->all();
             $empresas->fill($data);
             $empresas->save();
     
         } catch (Exception $e) {
-            return response([
+            // return response([
+            //         "mensaje" => "Error al guardar, por favor intenta de nuevo o comunícate con el administrador.",
+            //         "error" => $e->getMessage()
+            //     ]);
+
+            $retorno = [
                     "mensaje" => "Error al guardar, por favor intenta de nuevo o comunícate con el administrador.",
                     "error" => $e->getMessage()
-                ]);
+                ];
+
+            return response()->json($retorno);
         }
         
-        return response([
+        // return response([
+        //         "success" => true,
+        //         "mensaje" => "Datos guardados correctamente",
+        //         //"request" => $request->all(),
+        //         "empresas" => $empresas
+        //     ]);
+
+         $retorno = [
                 "success" => true,
                 "mensaje" => "Datos guardados correctamente",
                 //"request" => $request->all(),
-                "empresas" => $empresas
-            ]);
+                "usuario" => $empresas
+            ];
+
+        return response()->json($retorno);
     }
 
     public function postFormempresa(Request $request)

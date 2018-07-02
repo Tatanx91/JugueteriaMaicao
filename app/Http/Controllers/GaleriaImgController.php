@@ -57,13 +57,13 @@ class GaleriaImgController extends Controller
 		            $img->fill($data);
 		            $img->save();
                 	$fileName = str_replace(" ", "_", $file->getClientOriginalName());
-                    $file->move($path, 'jugueteimg'.$img['idJugueteImg'].'.'.$extension);             
-		            $juguete['Imagenes'] = 'jugueteimg'.$img['idJugueteImg'].'.'.$extension;
+                    $file->move($path, 'Jugueteimg'.$img['idJugueteImg'].'.'.$extension);             
+		            $juguete['Imagenes'] = 'Jugueteimg'.$img['idJugueteImg'].'.'.$extension;
             		$juguete['estado'] = 1;
 		            $juguete->fill($data);
 		            $juguete->save();
 
-					$img['Imagen']= 'jugueteimg'.$img['idJugueteImg'].'.'.$extension;
+					$img['Imagen']= 'Jugueteimg'.$img['idJugueteImg'].'.'.$extension;
 					$img->fill($data);
 		            $img->save();
                 }else{
@@ -90,8 +90,8 @@ class GaleriaImgController extends Controller
     public function CargarContenedorImg(Request $request)
     {
         $jugueteID = $request->input('IdJuguete');
-        $img = rel_juguete_img::join('juguete','juguete.IdJuguete','=','rel_juguete_img.IdJuguete')
-         ->select('rel_juguete_img.*')->where('rel_juguete_img.IdJuguete','=',$jugueteID)->get();
+        $img = rel_juguete_img::join('Juguete','Juguete.IdJuguete','=','JugueteImg.IdJuguete')
+         ->select('JugueteImg.*')->where('JugueteImg.IdJuguete','=',$jugueteID)->get();
        
 
         $view = view('Galeria.contendorImg')->with(['img'=>$img]);

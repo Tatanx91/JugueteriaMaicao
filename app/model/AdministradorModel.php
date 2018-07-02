@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class AdministradorModel extends Model
 {
     protected $primaryKey = "ID";
-    protected $table = "administrador";
+    protected $table = "Administrador";
     protected $fillable = [
 		'ID',
 		'IdUsuario',

@@ -44,17 +44,17 @@ class HijoEmpleadoController extends Controller
         $columna = $request->get('columns');
         $orderBy = $columna[$sortColumnIndex]['data'];
         
-        $result = HijoEmpleado_Model::join('tipodocumento','tipodocumento.Id','=','hijoempleado.IdGenero')
-        ->join('empleado','empleado.Id','=','hijoempleado.IdEmpleado')
+        $result = HijoEmpleado_Model::join('TipoDocumento','TipoDocumento.Id','=','Hijoempleado.IdGenero')
+        ->join('Empleado','Empleado.Id','=','Hijoempleado.IdEmpleado')
          ->select(
-         	'hijoempleado.ID',
-			'hijoempleado.Nombre',
-			'hijoempleado.Apellido',
-			'hijoempleado.IdTipoDocumento',
-			'hijoempleado.NumeroDocumento',
-			'hijoempleado.FechaNacimiento',
-			'hijoempleado.Estado',
-			'tipodocumento.Nombre')->where('empleado.ID',$IdEmpleadoP);
+         	'Hijoempleado.ID',
+			'Hijoempleado.Nombre',
+			'Hijoempleado.Apellido',
+			'Hijoempleado.IdTipoDocumento',
+			'Hijoempleado.NumeroDocumento',
+			'Hijoempleado.FechaNacimiento',
+			'Hijoempleado.Estado',
+			'TipoDocumento.Nombre')->where('Empleado.ID',$IdEmpleadoP);
                                     //->orderBy("Idresult", "desc");//
 
         $result  = $result->orderBy($orderBy, $sortColumnDir);  
@@ -68,7 +68,7 @@ class HijoEmpleadoController extends Controller
                          "Apellido LIKE '%". $search['value'] . "%' OR " .
                          "NumeroDocumento LIKE '%". $search['value'] . "%' OR " .
                          "FechaNacimiento LIKE '%". $search['value'] . "%' OR " .
-                         "tipodocumento.Nombre LIKE '%". $search['value']. "%')");
+                         "TipoDocumento.Nombre LIKE '%". $search['value']. "%')");
             }
         
         $parcialRegistros = $result->count();

@@ -9,7 +9,7 @@ use Jugueteria\model\EmpleadoModel;
 use Jugueteria\model\TipoDocumento_Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
-use Jugueteria\model\Usuario_Model;
+use Jugueteria\model\UsuariosModel;
 use File;
 
 class EmpleadoController extends Controller
@@ -54,18 +54,18 @@ class EmpleadoController extends Controller
         $columna = $request->get('columns');
         $orderBy = $columna[$sortColumnIndex]['data'];
         
-        $result = EmpleadoModel::join('tipodocumento','tipodocumento.Id','=','empleado.IdTipoDocumento')
+        $result = EmpleadoModel::join('TipoDocumento','TipoDocumento.Id','=','Empleado.IdTipoDocumento')
          ->select(
-         	'empleado.ID',
-         	'empleado.IdUsuario',
-			'empleado.IdEmpresa',
-			'empleado.Nombre',
-			'empleado.Apellido',
-			'empleado.IdTipoDocumento',
-			'empleado.NumeroDocumento',
-			'empleado.FechaNacimiento',
-			'empleado.Estado',
-			'tipodocumento.Nombre');
+         	'Empleado.ID',
+         	'Empleado.IdUsuario',
+			'Empleado.IdEmpresa',
+			'Empleado.Nombre',
+			'Empleado.Apellido',
+			'Empleado.IdTipoDocumento',
+			'Empleado.NumeroDocumento',
+			'Empleado.FechaNacimiento',
+			'Empleado.Estado',
+			'TipoDocumento.Nombre');
                                     //->orderBy("Idresult", "desc");//
 
         $result  = $result->orderBy($orderBy, $sortColumnDir);  
@@ -79,7 +79,7 @@ class EmpleadoController extends Controller
                          "Apellido LIKE '%". $search['value'] . "%' OR " .
                          "NumeroDocumento LIKE '%". $search['value'] . "%' OR " .
                          "FechaNacimiento LIKE '%". $search['value'] . "%' OR " .
-                         "tipodocumento.Nombre LIKE '%". $search['value']. "%')");
+                         "TipoDocumento.Nombre LIKE '%". $search['value']. "%')");
             }
         
         $parcialRegistros = $result->count();
@@ -114,12 +114,13 @@ class EmpleadoController extends Controller
             $datos = $Id == "" ? new EmpleadoModel() : EmpleadoModel::find($Id);
 
              if($Id != ""){
-	        	$datosusu = Usuario_Model::find($datos['IdUsuario']);
+	        	$datosusu = UsuariosModel::find($datos['IdUsuario']);
 	        	$datosusu->fill($data);
 	        }else{
-		 		$datosusu = new Usuario_Model();  
-				$datosusu['Password'] = $request->input('NumeroDocumento');
-				$datosusu['Login'] = $request->input('Login');
+		 		$datosusu = new UsuariosModel();  
+				$datosusu['Contrasena'] = $request->input('NumeroDocumento');
+                $datosusu['IdTipoUsuario'] = 3;
+				// $datosusu['Login'] = $request->input('Login');
 		 	}
 
 			$datosusu['Confirmado'] = 0;
@@ -156,8 +157,8 @@ class EmpleadoController extends Controller
         $ID = $request->input('IdJuguete');
         $datos = $ID == "" ? new EmpleadoModel() : EmpleadoModel::find($ID);
         if($datos != null){
-        	$datosusu = Usuario_Model::find($datos['IdUsuario']);
-			$datos['Login'] = $datosusu['Login'];	
+        	$datosusu = UsuariosModel::find($datos['IdUsuario']);
+			// $datos['Login'] = $datosusu['Login'];	
         }
         $tipodoc = [null=>'Seleccione...'];
         $tipodoc = TipoDocumento_Model::orderBy('ID','asc')->pluck('Nombre','Id');
@@ -230,7 +231,7 @@ class EmpleadoController extends Controller
                     	$datosLinea = explode(',', $line);
                     	//echo count($datosLinea);
                     	 $datos =  new EmpleadoModel();
-                    	 $datosusu = new Usuario_Model();
+                    	 $datosusu = new UsuariosModel();
                     	if(count($datosLinea) > 0  && count($datosLinea) == 6){
                     		if(is_string($datosLinea[0])){
 				            	$datos['Nombre'] = $datosLinea[0];
@@ -266,7 +267,7 @@ class EmpleadoController extends Controller
                     		if($result_texto == ''){
 
 		            			//$datosusu['Login'] = $datos['NumeroDocumento'];
-					            $datosusu['Password'] = $datos['NumeroDocumento'];
+					            $datosusu['Contrasena'] = $datos['NumeroDocumento'];
 					            $datosusu['Confirmado'] = 0;
 					            $datosusu['CodigoConf'] = "";
 					            $datosusu->save();

@@ -32,16 +32,16 @@ class EmpresaController extends Controller
         $columna = $request->get('columns');
         $orderBy = $columna[$sortColumnIndex]['data'];
         
-        $empresas = Empresa_Model::join('tipodocumento','tipodocumento.IdTipoDocumento','=','empresas.IdTipoDocumento')
+        $empresas = Empresa_Model::join('TipoDocumento','TipoDocumento.IdTipoDocumento','=','Empresas.IdTipoDocumento')
          ->select(
-                'empresas.IdEmpresa',
-                'empresas.NombreEmpresa',
-                'tipodocumento.IdTipoDocumento',
-                'tipodocumento.NombreTipoDocumento',
-                'empresas.NumeroDocumento',
-                'empresas.Logo',
-                'empresas.Password',
-                'empresas.Estado');
+                'Empresas.IdEmpresa',
+                'Empresas.NombreEmpresa',
+                'TipoDocumento.IdTipoDocumento',
+                'TipoDocumento.NombreTipoDocumento',
+                'Empresas.NumeroDocumento',
+                'Empresas.Logo',
+                'Empresas.Password',
+                'Empresas.Estado');
                 //->orderBy("IdEmpresa", "desc");
 
         $empresas = $empresas->orderBy($orderBy, $sortColumnDir);  

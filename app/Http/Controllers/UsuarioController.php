@@ -37,8 +37,8 @@ class UsuarioController extends Controller
     }
     public function getIndex()
     {
-        $Usuario = UsuariosModel::join('administrador', 'administrador.IdUsuario', '=', 'usuario.ID')
-            ->orderBy('administrador.NombreUsuario', 'desc')->get();
+        $Usuario = UsuariosModel::join('Administrador', 'Administrador.IdUsuario', '=', 'Usuario.ID')
+            ->orderBy('Administrador.NombreUsuario', 'desc')->get();
         return view('Usuario.ConsultarUsuarios',compact('UsuariosModel'));
     }
     
@@ -214,7 +214,7 @@ class UsuarioController extends Controller
         $IdUsuario = $usuario["ID"];
         $codigoConf = str_random(25);
 
-        DB::update('update Usuarios set Confirmado = 0, CodigoConf = "'.$codigoConf.'" where ID = '.$IdUsuario); 
+        DB::update('update Usuario set Confirmado = 0, CodigoConf = "'.$codigoConf.'" where ID = '.$IdUsuario); 
         
         //envio correo de confirmacion
         Mail::send('Correos.RecuperarContrasena',['codigoConf' => $codigoConf],function($mensaje) use ($data){
@@ -293,15 +293,15 @@ class UsuarioController extends Controller
         $columna = $request->get('columns');
         $orderBy = $columna[$sortColumnIndex]['data'];
 
-        $usuario = UsuariosModel::join('tipoUsuario', 'tipoUsuario.ID' ,'=', 'usuario.IdTipoUsuario')
-            ->join('administrador', 'administrador.IdUsuario' ,'=', 'usuario.ID')
+        $usuario = UsuariosModel::join('TipoUsuario', 'TipoUsuario.ID' ,'=', 'Usuario.IdTipoUsuario')
+            ->join('Administrador', 'Administrador.IdUsuario' ,'=', 'Usuario.ID')
             ->select(
-                'usuario.ID',
-                'administrador.NumeroDocumento',
-                'administrador.NombreUsuario',
-                'usuario.Correo',
-                'tipoUsuario.Nombre as TipoUsuario',
-                'administrador.Estado');
+                'Usuario.ID',
+                'Administrador.NumeroDocumento',
+                'Administrador.NombreUsuario',
+                'Usuario.Correo',
+                'TipoUsuario.Nombre as TipoUsuario',
+                'Administrador.Estado');
 
         $usuario  = $usuario->orderBy($orderBy, $sortColumnDir);  
 
