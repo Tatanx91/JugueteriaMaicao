@@ -368,7 +368,6 @@ class UsuarioController extends Controller
         $data = $request->all();
 
         if($usuario != null and $usuario->count > 0){
-            return $usuario;
             $adinistradores = AdministradorModel::where('IdUsuario', $IdUsuario);
             $administrador = $adinistradores->first();    
         }
