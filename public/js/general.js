@@ -33,9 +33,19 @@
 	$(document).on('click','#MASIVO',function(event){
     	event.stopPropagation();
         var id_modulo=$("#id_modulo").val();
-        Id=$(this).data('id');
-        $.post($("#APP_URL").val()+"/"+id_modulo+"/Masivo"+id_modulo,{ "_token" :  $("#_MTOKEN").val(), "Id" : Id },function(data){
+        Id=$("#IdEmpresaG").val();
+        $.post($("#APP_URL").val()+"/"+id_modulo+"/Masivo"+id_modulo,{ "_token" :  $("#_MTOKEN").val(), "empresa" : Id },function(data){
 	         $('#popup').empty().append($(data));
+             $('#popup').modal('show');
+        });
+     })
+     
+    $(document).on('click','#MASIVOEMPRESA',function(event){
+        event.stopPropagation();
+        var id_modulo=$("#id_modulo").val();
+        console.log($("#APP_URL").val()+"/"+id_modulo+"/Masivo"+id_modulo)
+        $.post($("#APP_URL").val()+"/"+id_modulo+"/Masivo"+id_modulo,{ "_token" :  $("#_MTOKEN").val() },function(data){
+             $('#popup').empty().append($(data));
              $('#popup').modal('show');
         });
      })

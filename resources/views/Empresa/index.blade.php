@@ -7,10 +7,14 @@
                     <h3 class="title_general">
                         Empresas
 
+
                             <button type="button" id="AGREGAR"  class="btn btn-primary derecha"  data-toggle="modal" data-placement="bottom" data-target="#popup" title="Agregar registro" >
                             <span class="fa fa-plus"></span>
                             </button>
 
+                            <button type="button" id="MASIVOEMPRESA"  class="btn btn-primary derecha" style="margin-right:  2% !important;" data-toggle="modal" data-placement="bottom" data-target="#popup" title="Subir masivos" >
+                                <span class="fa fa-upload"></span>
+                            </button>
                     </h3>       
                 </div>
             </div>

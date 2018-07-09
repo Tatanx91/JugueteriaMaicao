@@ -14,20 +14,22 @@ use File;
 
 class EmpleadoController extends Controller
 {  
+    private $IdEmpresa;
+
 	public function __construct(){
         //$this->middleware('auth', ['except' => ['Index,datatableJuguete,datatableListJuguete,postStore,postFormJuguete']]);
          $this->middleware(['auth:web' || 'auth:api']); 
     }
-    public function Index()
+    public function Index($IdEmpresa)
     {
-
-        return view('Empleado.index');
+        $this->IdEmpresa = $IdEmpresa;
+        return view('Empleado.index')->with(['IdEmpresa'=>$IdEmpresa]);
     }
 
     public function Masivoempleado(Request $request){
         $titulo = "masivo Empelado";
         $datos =  new EmpleadoModel();
-        $datos['IdEmpresa'] = 1;
+        $datos['IdEmpresa'] = $request->get("empresa");
         $view = view('Empleado.MasivoEmpleado')->with(['titulo' => $titulo,'datos'=>$datos]);
 
     	  if($request->ajax()){
@@ -65,7 +67,7 @@ class EmpleadoController extends Controller
 			'Empleado.NumeroDocumento',
 			'Empleado.FechaNacimiento',
 			'Empleado.Estado',
-			'TipoDocumento.Nombre');
+			'TipoDocumento.Nombre')->where('Empleado.IdEmpresa',$request->get("empresa"));
                                     //->orderBy("Idresult", "desc");//
 
         $result  = $result->orderBy($orderBy, $sortColumnDir);  
@@ -108,7 +110,6 @@ class EmpleadoController extends Controller
     public function postStore(Request $request)
     {
         try {
-            
             $Id = $request->input('ID');
             $data = $request->all();
             $datos = $Id == "" ? new EmpleadoModel() : EmpleadoModel::find($Id);
@@ -131,7 +132,6 @@ class EmpleadoController extends Controller
 
             $datos->fill($data);
 			$datos['IdUsuario'] = $datosusu->ID;
-            $datos['IdEmpresa'] = 1;
          	$datos['estado'] = 1;
             $datos->save();
     
@@ -151,6 +151,7 @@ class EmpleadoController extends Controller
 		return response()->json($retorno);
         //return view('Empleado.index');
     }
+
     public function postFormempleado(Request $request)
     {
         $titulo = "Empelado";
@@ -162,7 +163,6 @@ class EmpleadoController extends Controller
         }
         $tipodoc = [null=>'Seleccione...'];
         $tipodoc = TipoDocumento_Model::orderBy('ID','asc')->pluck('Nombre','Id');
-
         $view = view('Empleado.formEmpleado')->with(['datos' => $datos, 'titulo' => $titulo,'tipodoc'=>$tipodoc]);
 
         if($request->ajax()){
@@ -245,7 +245,7 @@ class EmpleadoController extends Controller
 				                    		if($this->validateDate($datosLinea[4])){
 				            					$datos['FechaNacimiento'] = $datosLinea[4];
 						                    		if( $this->email($datosLinea[5])){
-				            							$datosusu['Login'] = $datosLinea[5];
+				            							$datosusu['Correo'] = $datosLinea[5];
 						                    		}else{
                     									$result_texto .= '| Email no valido, linea:'.$key.' |';
 						                    		}
@@ -265,15 +265,15 @@ class EmpleadoController extends Controller
                     			$result_texto .= '| Nombre no valido, linea:'.$key.' |';
                     		}
                     		if($result_texto == ''){
-
 		            			//$datosusu['Login'] = $datos['NumeroDocumento'];
 					            $datosusu['Contrasena'] = $datos['NumeroDocumento'];
 					            $datosusu['Confirmado'] = 0;
 					            $datosusu['CodigoConf'] = "";
+                                $datosusu['IdTipoUsuario'] = 3;
 					            $datosusu->save();
 					            $datos['IdUsuario'] = $datosusu->ID;
 
-					            $datos['IdEmpresa'] = 1;//$request->input('IdEmpresa');
+					            $datos['IdEmpresa'] = $request->input('IdEmpresa');
 					         	//$datos['IdUsuario'] = 1;
 					            $datos->save();
 				            	//var_dump($datos);

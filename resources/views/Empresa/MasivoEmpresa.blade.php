@@ -1,6 +1,5 @@
 @extends('Templates.secciones.app')
 @section('content_modal')
-
     <div class="modal-dialog" style="min-width: 80% !important;">
         <div class="modal-content">        	
 			
@@ -42,7 +41,7 @@
 
         Dropzone.autoDiscover = false;
         var urlForm = $('#APP_URL').val() +"/empleado/GuardarTxt/";
-        //console.log(urlForm)
+        console.log(urlForm)
         var token = $('#_MTOKEN').val();        
         var formLogo = new Dropzone("form#form-masivoempleado", { 
         url: urlForm,     
@@ -73,7 +72,6 @@
                 this.on("sending", function(file, xhr, formData) {                                                                    
                   formData.append('_token', token);
                   formData.append('Id', {{$datos->IdEmpresa}});
-                  formData.append('IdEmpresa', {{$datos->IdEmpresa}});
                 });
                 this.on("complete", function(file) {
                     myDropzones.removeFile(file);
@@ -84,7 +82,9 @@
         
                 });
                 this.on("success", function(file, response) {
-                 if(response.error != null){
+                    console.log(file);
+                    console.log(response); 
+                    if(response.error != null){
                    $("#mensaje_errorM").html('<div class="alert alert-danger alert-dismissible div-msg" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><b>'+response.mensaje+'</b></center></div>')
 
                }else{
@@ -101,6 +101,5 @@
     });
   
 </script>
-
-        {!! Html::script('js/Empleado/empleado.js') !!}
 @endsection
+        {!! Html::script('js/Empleado/empleado.js') !!}

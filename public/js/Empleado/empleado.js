@@ -11,6 +11,7 @@ function cargarTablaempleado(){
 		"ajax":{
 			"url":url,
 			"type":"GET",
+			data:{empresa:$("#IdEmpresaG").val()}
 		},
 		"columns":[
 			// {"data": "IdJuguete", "className": "text-center"},
@@ -51,7 +52,7 @@ function guardarEmpleado(){
 		validaCampos('empleado')
 		var url = $("#APP_URL").val() + "/empleado/postStore/";
 		var params = $("#form-empleado").serialize();
-		params += "&_token=" + token;
+		params += "&_token=" + token+"&IdEmpresa="+$("#IdEmpresaG").val();
 		$.post(url, params).done(function(data){
 			cargarTablaempleado()
 			$('.close').click();

@@ -3,7 +3,6 @@ var token = $("#_MTOKEN").val();
 function cargarTablaEmpresa(){
 
 	var url = $('#APP_URL').val() + "/empresa/datatableListEmpresa";//&_token=" + token;
-	console.log(url);
 	var TablaEmpresas = $("#TablaEmpresas").dataTable({destroy:true});
 	TablaEmpresas.fnDestroy();
 	TablaEmpresas.DataTable({
@@ -35,11 +34,13 @@ function cargarTablaEmpresa(){
 				Estado = "desactivar";
 				clase_estado = "fa-toggle-on";
 			}
-					console.log(Estado);
-            		$(row).attr('id','tr_'+index);
-					$("td", row).eq(8).html("<span style='cursor: pointer;' class='fa fa-edit fa-2x' data-id='"+data.ID+"' id='EDITAR' title='Editar Empresa'></span>");
-					$("td", row).eq(9).html("<span style='cursor: pointer;' id=estado_"+data.ID+" class='fa "+clase_estado+" fa-2x' onclick=activarDessactivarEmpresa('"+data.ID+"','"+data.Estado+"'); title='"+Estado+" Empresa'></span></button>")
-					$("td", row).eq(10).html("<span style='cursor: pointer;' class='fa fa-camera fa-2x'></span>")
+			console.log(Estado);
+    		$(row).attr('id','tr_'+index);
+			$("td", row).eq(8).html("<span style='cursor: pointer;' class='fa fa-edit fa-2x' data-id='"+data.ID+"' id='EDITAR' title='Editar Empresa'></span>");
+			$("td", row).eq(9).html("<span style='cursor: pointer;' id=estado_"+data.ID+" class='fa "+clase_estado+" fa-2x' onclick=activarDessactivarEmpresa('"+data.ID+"','"+data.Estado+"'); title='"+Estado+" Empresa'></span></button>")
+			$("td", row).eq(10).html("<a href='"+$("#APP_URL").val() +"/Empleado/Index/"+data.ID+"'><span style='cursor: pointer;' class='fa fa-users fa-2x'title='Empleado'  ></span><a>")
+			//$("td", row).eq(10).html("<span style='cursor: pointer;' class='fa fa-users fa-2x' onclick=empleado('"+data.ID+"');></span>")
+		
 		},
 		"aLengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
 		"iDisplayLength": 10, "bLengthChange": true,

@@ -15,73 +15,37 @@
 </div>
 <body style="padding-top: 0px;">
     <div id="head" class="navbar navbar-inverse navbar-fixed-top" style="z-index:4; background-color:#295c93 !important; border-color: #295c93;margin-bottom: 5px !important;">
-            <table class="derecha">
-                <tr>              
-                    <td>
-                        <div class="item-subMenuApp unlock">
-                            <div class="item-subMenuApp-header">
-                                <a href="{{ url('/inicio/menu') }}" title="Menú" style="cursor:pointer;">
-                                    <div class="subMenu-icon">                   
-                                        {{-- <span class="fa fa-home" aria-hidden="true" style="color:#295c93"></span> --}}
-                                        <span class="fa fa-home" aria-hidden="true" style="color:#FFFFFF"></span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="item-subMenuApp unlock">
-                            <div class="item-subMenuApp-header">
-                                <a href="{{ url('Usuarios') }}" title="Usuarios" style="color: #FFFFFF;">
-                                    Usuarios
-                                </a>
-                            </div>
-                        </div>
-                    </td>
-                    <td>'          /             '</td>
-                    <td>
-                        <div class="item-subMenuApp unlock">
-                            <div class="item-subMenuApp-header">
-                                <a href="{{ url('Juguete') }}" title="Juguetes" style="color: #FFFFFF;">
-                                    Juguetes
-                                </a>
-                            </div>
-                        </div>
-                    </td>
-                    <td>'             /          '</td>
-                    <td>
-                        <div class="item-subMenuApp unlock">
-                            <div class="item-subMenuApp-header">
-                                <a href="{{ url('Empleado') }}" title="Empleado" style="color: #FFFFFF;">
-                                    Empleado
-                                </a>
-                            </div>
-                        </div>
-                    </td>
-                    <td>'             /          '</td>
-                    <td>
-                        <div class="item-subMenuApp unlock">
-                            <div class="item-subMenuApp-header">
-                                <a href="{{ url('Empresa') }}" title="Empresa" style="color: #FFFFFF;">
-                                    Empresas
-                                </a>
-                            </div>
-                        </div>
-                    </td>
-                    <td>'             /          '</td>
-                    <td>
-                        <div class="item-subMenuApp unlock">
-                            <div class="item-subMenuApp-header">
-                                <a href="{{ url('/Inicio') }}" title="Cerrar Sesion" style="color: #FFFFFF;">
-                                    Cerrar Sesion
-                                </a>
-                            </div>
-                        </div>
-                    </td>
+        <nav class="navbar navbar-expand-lg navbar-light">
+              <a class="navbar-brand" style="color: #FFFFFF;" href="{{ url('/inicio/menu') }}">Maicao GiftStore</a>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
 
-                </tr>   
-            </table>   
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                    <a href="{{ url('Usuarios') }}" title="Usuarios" style="color: #FFFFFF;" class="nav-link">
+                        <span class="fa fa-user" aria-hidden="true" style="color:#FFFFFF">Usuarios</span>
+                    </a>
+              </li>
+              <li class="nav-item">
+                    <a href="{{ url('Juguete') }}" title="Juguetes" style="color: #FFFFFF;" class="nav-link">
+                        <span class="fa fa-space-shuttle" aria-hidden="true" style="color:#FFFFFF">Juguetes</span>
+                    </a>
+              </li>
+              <li class="nav-item">
+                    <a href="{{ url('Empresa') }}" title="Empresa" style="color: #FFFFFF;" class="nav-link">
+                        <span class="fa fa-building" aria-hidden="true" style="color:#FFFFFF">Empresas</span>                
+                    </a> 
+              </li>
+            </ul>
+          </div>
+        </nav>       
+        <a href="{{ url('/Inicio') }}" title="Cerrar Sesion" style="color: #FFFFFF;float: right;">
+            Cerrar Sesion
+        </a>   
     </div>
+
 
     <div class="container">
 

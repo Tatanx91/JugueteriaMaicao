@@ -129,6 +129,11 @@ Route::post('/juguete/cambiaEstado',[
 ]);
 
 Route::get('/Empleado','EmpleadoController@index');
+Route::get('/Empleado/Index/{Id}', array(
+    'as' => 'Empleado',
+    'uses' => 'EmpleadoController@index'
+));
+
 Route::get('/empleado/postFormempleado', array(
     'as' => 'postFormempleado',
     'uses' => 'EmpleadoController@postFormempleado'
@@ -244,4 +249,13 @@ Route::get('/empresa/datatableListEmpresa', array(
 Route::post('/empresa/cambiaEstado',[
     'as' => 'cambiaEstado',
     'uses' => 'EmpresaController@cambiaEstado'
+]);
+Route::post('/empresa/Masivoempresa',[
+    'as' => 'Masivoempresa',
+    'uses' => 'EmpresaController@Masivoempresa'
+]);
+
+Route::post('/empresa/postStoremasivos',[
+    'as' => 'postStoremasivos',
+    'uses' => 'EmpresaController@postStoremasivos'
 ]);

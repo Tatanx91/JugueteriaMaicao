@@ -64,9 +64,9 @@ class AuthController extends Controller
             
         }
 
-        if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
+        // if (! $token = auth()->attempt($credentials)) {
+        //     return response()->json(['error' => 'Unauthorized'], 401);
+        // }
 
         // return $this->respondWithToken($token);
         // return view('Usuario.ConsultarUsuarios');

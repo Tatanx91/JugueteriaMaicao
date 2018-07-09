@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{{ asset('css/booststrap/css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dataTable/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dropzone.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/estilos_menu.css') }}">
 
 <style type="text/css">
     textarea{

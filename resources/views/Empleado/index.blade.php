@@ -6,8 +6,11 @@
             <div class="page-header">
                 <div>
                     <h3 class="title_general">
-                        Empleado         
-
+                        Empleado       
+                        <a class="btn btn-primary " tile="Volver" href="{!! url('Empresa'); !!}" style="cursor: pointer;">
+                            <span  class="fa fa-arrow-left"></span>
+                        </a>  
+        
                   
                             <button type="button" id="AGREGAR"  class="btn btn-primary derecha"  data-toggle="modal" data-placement="bottom" data-target="#popup" title="Agregar registro" >
                                 <span class="fa fa-plus"></span>
@@ -24,7 +27,8 @@
                 </div>
             </div>
         </div>
-
+        {!! Form::hidden('IdEmpresaG', $IdEmpresa, array('id' => 'IdEmpresaG'))!!}
+        {{ Form::hidden('id_modulo', 'empleado', array('id' => 'id_modulo')) }}
         <div id="mensaje"></div>
 		{{ Form::hidden('id_modulo', 'empleado', array('id' => 'id_modulo')) }}
         <div class="table-responsive">

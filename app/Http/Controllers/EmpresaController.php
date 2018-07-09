@@ -17,6 +17,20 @@ class EmpresaController extends Controller
          $this->middleware(['auth:web' || 'auth:api']); 
     }
 
+    public function Masivoempresa(Request $request){
+        $titulo = "masivo Empresa";
+        $datos =  new Empresa_Model();
+        $datos['IdEmpresa'] = 1;
+        $view = view('Empresa.MasivoEmpresa')->with(['titulo' => $titulo,'datos'=>$datos]);
+
+          if($request->ajax()){
+            return $view->renderSections()['content_modal'];
+        }else{
+            return $view;
+        }  
+        //return view('Empresa.index');
+    }
+
     public function Index()
     {
         return view('Empresa.index');
@@ -32,17 +46,18 @@ class EmpresaController extends Controller
         $columna = $request->get('columns');
         $orderBy = $columna[$sortColumnIndex]['data'] == 'ID' ? 'Empresa.ID' :  $columna[$sortColumnIndex]['data'];
         
-        $empresas = Empresa_Model::join('TipoDocumento','TipoDocumento.ID','=','Empresa.IdTipoDocumento')
-         ->select(
-                'Empresa.ID',
-                'Empresa.IdUsuario',
-                'Empresa.Nombre',
-                'Empresa.IdTipoDocumento',
-                'TipoDocumento.Nombre AS NombreTipoDocumento',
-                'Empresa.NumeroDocumento',
-                'Empresa.Logo',
-                'Empresa.Estado');
-                //->orderBy("IdEmpresa", "desc");
+        $empresas = Empresa_Model::join('TipoDocumento','TipoDocumento.Id','=','Empresa.IdTipoDocumento')
+        //join('TipoDocumento','TipoDocumento.ID','=','Empresa.IdTipoDocumento')
+                 ->select(
+                        'Empresa.ID',
+                        'Empresa.IdUsuario',
+                        'Empresa.Nombre',
+                        'Empresa.IdTipoDocumento',
+                        'TipoDocumento.Nombre AS NombreTipoDocumento',
+                        'Empresa.NumeroDocumento',
+                        'Empresa.Logo',
+                        'Empresa.Estado');
+                        //->orderBy("IdEmpresa", "desc");)
 
         $empresas = $empresas->orderBy($orderBy, $sortColumnDir);  
       
@@ -163,4 +178,5 @@ class EmpresaController extends Controller
     {
         //
     }
+
 }
