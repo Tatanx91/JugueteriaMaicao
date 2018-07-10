@@ -116,22 +116,21 @@ class EmpleadoController extends Controller
 
              if($Id != ""){
 	        	$datosusu = UsuariosModel::find($datos['IdUsuario']);
-	        	$datosusu->fill($data);
+	        	$datosusu['Correo'] = $request->input('Login');
+                $datosusu->save();
 	        }else{
 		 		$datosusu = new UsuariosModel();  
 				$datosusu['Contrasena'] = $request->input('NumeroDocumento');
                 $datosusu['IdTipoUsuario'] = 3;
-				// $datosusu['Login'] = $request->input('Login');
+                $datosusu['Confirmado'] = 0;
+                $datosusu['CodigoConf'] = "";
+                $datosusu['Correo'] = $request->input('Login');
+                $datosusu->save();
 		 	}
 
-			$datosusu['Confirmado'] = 0;
-			$datosusu['CodigoConf'] = "";
-			$datosusu->save();
-
-
-
             $datos->fill($data);
-			$datos['IdUsuario'] = $datosusu->ID;
+
+            if($Id == ""){ $datos['IdUsuario'] = $datosusu->ID;}
          	$datos['estado'] = 1;
             $datos->save();
     
@@ -159,7 +158,7 @@ class EmpleadoController extends Controller
         $datos = $ID == "" ? new EmpleadoModel() : EmpleadoModel::find($ID);
         if($datos != null){
         	$datosusu = UsuariosModel::find($datos['IdUsuario']);
-			// $datos['Login'] = $datosusu['Login'];	
+			$datos['Correo'] = $datosusu['Correo'];	
         }
         $tipodoc = [null=>'Seleccione...'];
         $tipodoc = TipoDocumento_Model::orderBy('ID','asc')->pluck('Nombre','Id');

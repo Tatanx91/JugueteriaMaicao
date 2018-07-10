@@ -70,6 +70,7 @@
                             
                     <br>
                     {{ Form::hidden('IdEmpleadoP',$IdEmpleado, array('id' => 'IdEmpleadoP')) }}
+                    <div id="mensaje_hijo" style="margin-top: 2% !important;"></div>
                     <div class="col-md-12 center-block" id="div_tablaHijo">
                             <div id="mensaje"></div>
                             {{ Form::hidden('id_modulo', 'empleado', array('id' => 'id_modulo')) }}

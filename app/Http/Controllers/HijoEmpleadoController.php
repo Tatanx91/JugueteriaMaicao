@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Jugueteria\model\EmpleadoModel;
 use Jugueteria\model\HijoEmpleado_Model;
-use Jugueteria\model\TipoDocumentoModel;
+use Jugueteria\model\TipoDocumento_Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Jugueteria\model\Usuario_Model;
+use Jugueteria\model\Genero_model;
 use File;
 
 
@@ -20,19 +21,19 @@ class HijoEmpleadoController extends Controller
          $this->middleware(['auth:web' || 'auth:api']); 
     }
 
-    public function Index(Request $request)
+       public function Index(Request $request)
     {
         $IdEmpleado = $request->input('IdEmpleado');
 
         $view = view('HijoEmpleado.index')->with(['titulo' =>'Hijos del empleado','IdEmpleado'=>$IdEmpleado]);
-    	if($request->ajax()){
+        if($request->ajax()){
             return $view->renderSections()['content_modal'];
         }else{
             return $view;
         }  
     }
 
-   	public function datatableListEmpleadoHijo(Request $request){
+    public function datatableListEmpleadoHijo(Request $request){
         // Datos de DATATABLE
         $IdEmpleadoP = $request->get("IdEmpleadoP");
         $search = $request->get("search");
@@ -44,17 +45,18 @@ class HijoEmpleadoController extends Controller
         $columna = $request->get('columns');
         $orderBy = $columna[$sortColumnIndex]['data'];
         
-        $result = HijoEmpleado_Model::join('TipoDocumento','TipoDocumento.Id','=','Hijoempleado.IdGenero')
-        ->join('Empleado','Empleado.Id','=','Hijoempleado.IdEmpleado')
+        $result = HijoEmpleado_Model::join('tipodocumento','tipodocumento.Id','=','hijoempleado.IdGenero')
+        ->join('empleado','empleado.Id','=','hijoempleado.IdEmpleado')
          ->select(
-         	'Hijoempleado.ID',
-			'Hijoempleado.Nombre',
-			'Hijoempleado.Apellido',
-			'Hijoempleado.IdTipoDocumento',
-			'Hijoempleado.NumeroDocumento',
-			'Hijoempleado.FechaNacimiento',
-			'Hijoempleado.Estado',
-			'TipoDocumento.Nombre')->where('Empleado.ID',$IdEmpleadoP);
+            'hijoempleado.ID',
+            'hijoempleado.IdEmpleado',
+            'hijoempleado.Nombre',
+            'hijoempleado.Apellido',
+            'hijoempleado.IdTipoDocumento',
+            'hijoempleado.NumeroDocumento',
+            'hijoempleado.FechaNacimiento',
+            'hijoempleado.Estado',
+            'tipodocumento.Nombre')->where('empleado.ID',$IdEmpleadoP);
                                     //->orderBy("Idresult", "desc");//
 
         $result  = $result->orderBy($orderBy, $sortColumnDir);  
@@ -68,7 +70,7 @@ class HijoEmpleadoController extends Controller
                          "Apellido LIKE '%". $search['value'] . "%' OR " .
                          "NumeroDocumento LIKE '%". $search['value'] . "%' OR " .
                          "FechaNacimiento LIKE '%". $search['value'] . "%' OR " .
-                         "TipoDocumento.Nombre LIKE '%". $search['value']. "%')");
+                         "tipodocumento.Nombre LIKE '%". $search['value']. "%')");
             }
         
         $parcialRegistros = $result->count();
@@ -91,11 +93,11 @@ class HijoEmpleadoController extends Controller
     {
         $IdEmpleado = $request->input('IdEmpleado');
         $ID = $request->input('ID');
-        echo $ID;
         $datos = $ID == "" ? new HijoEmpleado_Model() : HijoEmpleado_Model::find($ID);
         $tipodoc = [null=>'Seleccione...'];
-        $tipodoc = TipoDocumentoModel::orderBy('ID','asc')->pluck('Nombre','Id');
-        $view = view('HijoEmpleado.formHijoEmpleado')->with(['datos' => $datos, 'tipodoc'=>$tipodoc,'IdEmpleado'=>$IdEmpleado]);
+        $tipodoc = TipoDocumento_Model::orderBy('ID','asc')->pluck('Nombre','Id');
+        $genero = Genero_model::orderBy('Id','asc')->pluck('Nombre','Id');
+        $view = view('HijoEmpleado.formHijoEmpleado')->with(['datos' => $datos, 'tipodoc'=>$tipodoc,'IdEmpleado'=>$IdEmpleado,'genero'=>$genero]);
 
         if($request->ajax()){
             return $view->renderSections()['content_modal'];
@@ -103,6 +105,67 @@ class HijoEmpleadoController extends Controller
             return $view;
         }       
     }
+
+    public function postStore(Request $request)
+    {
+        try {
+            $IdEmpleado = $request->input('IdEmpleado');
+            $Id = $request->input('Id');
+            $data = $request->all();
+            //echo $Id;
+            $datos = $Id == "" ? new HijoEmpleado_Model() : HijoEmpleado_Model::find($Id);
+
+            $datos->fill($data);
+            $datos['estado'] = 1;
+            $datos->save();
+    
+        } catch (Exception $e) {
+            return response([
+                    "mensaje" => "Error al guardar, por favor intenta de nuevo o comunícate con el administrador.",
+                    "error" => $e->getMessage()
+                ]);
+        }
+
+        $retorno = [
+                "success" => true,
+                "mensaje" => "Datos guardados correctamente",
+                //"request" => $request->all(),
+                "result" => $datos
+            ];
+        return response()->json($retorno);
+        //return view('Empleado.index');
+    }
+
+
+    public function cambiaEstado(Request $request)
+    {
+        try {
+            
+            $Id = $request->input('Id');
+            $estado = $request->input('estado');
+            $datos = HijoEmpleado_Model::find($Id);
+            $datos['estado'] = $estado;
+            $data = $request->all();
+            $datos->fill($data);
+            $datos->save();
+            if($estado == 1)
+                EmpleadoModel::where('Id', $datos['IdEmpleado'])->update(['Estado' => $estado]);
+    
+        } catch (Exception $e) {
+            return response([
+                    "mensaje" => "Error al guardar, por favor intenta de nuevo o comunícate con el administrador.",
+                    "error" => $e->getMessage()
+                ]);
+        }
+        
+        return response([
+                "success" => true,
+                "mensaje" => "Datos guardados correctamente",
+                //"request" => $request->all(),
+                "datos" => $datos
+            ]);
+    }
+
 
 
 }

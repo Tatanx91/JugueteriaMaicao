@@ -9,6 +9,8 @@ use Jugueteria\model\Empresa_Model;
 use Jugueteria\model\TipoDocumento_Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Jugueteria\model\UsuariosModel;
+use File;
 
 class EmpresaController extends Controller
 {
@@ -150,7 +152,6 @@ class EmpresaController extends Controller
     public function cambiaEstado(Request $request)
     {
         try {
-            
             $IdEmpresa = $request->input('ID');
             $Estado = $request->input('Estado');
             $empresas = Empresa_Model::find($IdEmpresa);
@@ -178,5 +179,106 @@ class EmpresaController extends Controller
     {
         //
     }
+
+    public function GuardarTxt(Request $request){
+        try{
+
+                $data = $request->all();
+                $fecha = \DateTime::createFromFormat('Y-m-d', date('Y-m-d H:i:s'));
+
+                $file = $request->file('file');
+                $allowedFiles = array('txt');
+                $path = public_path().'/uploads/Masivo/empresa/'.$fecha.'/'; 
+
+                if($file != null ){
+                    $archivo =  str_replace(" ", "_", $file->getClientOriginalName());
+                    $extension = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
+                    if(in_array($extension,$allowedFiles)){                    
+                        if(!file_exists($path)){
+                          mkdir($path,0777,true);
+                          chmod($path, 0777); 
+                        }                       
+                    }
+
+                    $fileName = str_replace(" ", "_", $file->getClientOriginalName());
+                    $file->move($path, 'empresa.'.$extension);   
+                    $leerarchivo = explode("\n",File::get($path. '/empresa.'.$extension));
+
+                        $result_texto = '';
+                   // var_dump($leerarchivo);
+                    foreach ($leerarchivo as $key=>$line){
+                        $datosLinea = explode(',', $line);
+                        //echo count($datosLinea);
+                         $datos =  new Empresa_Model();
+                         $datosusu = new UsuariosModel();
+                        if(count($datosLinea) > 0  && count($datosLinea) == 4){
+                            if(is_string($datosLinea[0])){
+                                $datos['Nombre'] = $datosLinea[0];
+                                if(is_string($datosLinea[1])){
+                                    $id_codigo = TipoDocumento_Model::where('Codigo',$datosLinea[1])->select('ID')->first();
+                                    $datos['IdTipoDocumento'] = ($id_codigo['ID'] != null)?$id_codigo['ID']:1;
+                                    if(is_string($datosLinea[2])){  
+                                        $datos['NumeroDocumento'] = $datosLinea[2];
+                                        if( $this->email($datosLinea[3])){
+                                            $datosusu['Correo'] = $datosLinea[3];
+                                        }else{
+                                            $result_texto .= '| Email no valido, linea:'.$key.' |';
+                                        }
+                                    }else{
+                                        $result_texto .= '| NumeroDocumento no valido, linea:'.$key.' |';
+                                    }
+                                }else{
+                                    $result_texto .= '| IdTipoDocumento no valido, linea:'.$key.' |';
+                                }
+                            }else{
+                                $result_texto .= '| Nombre no valido, linea:'.$key.' |';
+                            }
+                            if($result_texto == ''){
+                                //$datosusu['Login'] = $datos['NumeroDocumento'];
+                                $datosusu['Contrasena'] = $datos['NumeroDocumento'];
+                                $datosusu['Confirmado'] = 0;
+                                $datosusu['CodigoConf'] = "";
+                                $datosusu['IdTipoUsuario'] = 3;
+                                $datosusu->save();
+                                $datos['IdUsuario'] = $datosusu->ID;
+
+                                //$datos['IdUsuario'] = 1;
+                                $datos->save();
+                                //var_dump($datos);
+                            }
+                        }else{
+                            $result_texto .= 'Error  al guardar. Cadena de texto no conside, linea: '.$key ;
+                        }
+                    }
+
+                    if($result_texto != ''){
+                        return response()->json([
+                                'mensaje'=>$result_texto,    
+                                'error' => 'error'
+                            ]);
+                    }
+                }else{
+                    return response()->json([
+                    'mensaje'=>"Error al guardar. Extensión no válida."        
+                    
+                    ]);
+                }
+            return response()->json([
+               'mensaje'=> "Datos guardados Correctamente", 
+               'success' => 'success'
+             ]);
+
+        }catch (Exception $e) {
+            return response()->json([
+                'mensaje'=>"Error  al guardar. Por favor intenta de nuevo.",         
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    function email($str){
+      return (false !== strpos($str, "@") && false !== strpos($str, "."));
+    }
+
 
 }

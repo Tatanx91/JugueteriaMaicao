@@ -3,8 +3,8 @@
 			<div id="mensaje_error" style="width: 100%;"></div>
 		</div>
 	<div class="row">
-		
-                    {{ Form::hidden('IdEmpleado',$IdEmpleado, array('id' => 'IdEmpleadoP')) }}
+        {{ Form::hidden('Id',$datos->Id, array('id' => 'Id')) }}
+        {{ Form::hidden('IdEmpleado',$IdEmpleado, array('id' => 'IdEmpleado')) }}
 
 		<div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
 			{!! Form::label('Nombre', 'Nombre:') !!}
@@ -18,7 +18,6 @@
 		<div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
 			{!! Form::label('IdTipoDocumento', 'Tipo Documento:') !!}
 			 {!! Form::select('IdTipoDocumento',$tipodoc ,$datos->IdTipoDocumento, array('id' => 'IdTipoDocumento','class'=>'form-control requiere' )) !!}
-			{{-- {!! Form::text('IdTipoDocumento', $datos->IdTipoDocumento, array('id' => 'IdTipoDocumento', 'class' => 'form-control requiere num-entero', 'placeholder' => 'genero del juguete')) !!}		 --}}	
 		</div>
 
 		<div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
@@ -26,6 +25,10 @@
 			{!! Form::text('NumeroDocumento', $datos->NumeroDocumento, array('id' => 'NumeroDocumento', 'class' => 'form-control requiere num-entero', 'placeholder' => 'NumeroDocumento')) !!}			
 		</div>
 
+		<div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">	
+			{!! Form::label('IdGenero', 'genero:') !!}
+			 {!! Form::select('IdGenero',$genero ,$datos->IdGenero, array('id' => 'IdGenero','class'=>'form-control requiere' )) !!}
+		</div>
  		<div class="col-lg-6 col-md-6 col-xs-12 col-sm-12">
 			{!! Form::label('FechaNacimiento', 'FechaNacimiento:') !!}
             <div class="form-group">

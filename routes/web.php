@@ -185,6 +185,18 @@ Route::post('/HijoEmpleado/postForm/',[
     'uses' => 'HijoEmpleadoController@postForm'
 ]);
 
+
+Route::post('/HijoEmpleado/postStore/',[
+    'as' => 'postStore',
+    'uses' => 'HijoEmpleadoController@postStore'
+]);
+
+Route::post('/HijoEmpleado/cambiaEstado/',[
+    'as' => 'cambiaEstado',
+    'uses' => 'HijoEmpleadoController@cambiaEstado'
+]);
+
+
 //Rutas correos
 Route::get('/registro/verificacion/{CodigoConf}', array(
     'as' => 'verificacion',
@@ -258,4 +270,8 @@ Route::post('/empresa/Masivoempresa',[
 Route::post('/empresa/postStoremasivos',[
     'as' => 'postStoremasivos',
     'uses' => 'EmpresaController@postStoremasivos'
+]);
+Route::post('/empresa/GuardarTxt',[
+    'as' => 'GuardarTxt',
+    'uses' => 'EmpresaController@GuardarTxt'
 ]);

@@ -13,7 +13,7 @@
                             <div id="mensaje_errorM">
                                 
                             </div>
-				        	{!! Form::open(['id' => 'form-masivoempleado', 'method' => 'POST', 'autocomplete' => 'off','route' => 'postStoremasivos']) !!}
+				        	{!! Form::open(['id' => 'form-masivoEmpresa', 'method' => 'POST', 'autocomplete' => 'off','route' => 'postStoremasivos']) !!}
 				        	<div id="col-md-4"></div>
 				        	<div id="col-md-4">
 				        		<center>
@@ -40,10 +40,10 @@
     var maxfile = 1;
 
         Dropzone.autoDiscover = false;
-        var urlForm = $('#APP_URL').val() +"/empleado/GuardarTxt/";
+        var urlForm = $('#APP_URL').val() +"/empresa/GuardarTxt/";
         console.log(urlForm)
         var token = $('#_MTOKEN').val();        
-        var formLogo = new Dropzone("form#form-masivoempleado", { 
+        var formLogo = new Dropzone("form#form-masivoEmpresa", { 
         url: urlForm,     
         acceptedFiles: "text/plain",
         autoProcessQueue: false,
@@ -82,13 +82,12 @@
         
                 });
                 this.on("success", function(file, response) {
-                    console.log(file);
-                    console.log(response); 
+                    
                     if(response.error != null){
                    $("#mensaje_errorM").html('<div class="alert alert-danger alert-dismissible div-msg" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><b>'+response.mensaje+'</b></center></div>')
 
                }else{
-                    cargarTablaempleado();
+                    cargarTablaEmpresa();
                      $('.close').click();
                       $("#mensaje").html('<div class="alert alert-success alert-dismissible div-msg" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><b>'+response.mensaje+'</b></center></div>')   
                   }

@@ -11,26 +11,32 @@
     <title>Maicao Gift Store</title>
 
 
-
-    <!-- Bootstrap core CSS -->
-    {!! Html::style('/css/font-awesome.min.css') !!}
-    <link rel="stylesheet" href="{{ asset('css/booststrap/css/bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/dataTable/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/dropzone.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/estilos_menu.css') }}">
-
 <style type="text/css">
     textarea{
   resize: vertical !important;
 }
 </style>
 
+
     <script src="{{asset('js/jquery/jquery.min.js')}}"></script>
+    <script src="{{asset('js/moment.js')}}"></script>
     <script src="{{asset('js/general.js')}}"></script>
     <script src="{{asset('css/booststrap/js/bootstrap.min.js')}}"></script>
 
     <script src="{{asset('js/datatable/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('js/datatable/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('js/tempusdominus-bootstrap-4.min.js')}}"></script>
     <script src="{{asset('js/dropzone.js')}}"></script>
+
+
+
+    <!-- Bootstrap core CSS -->
+    {!! Html::style('/css/font-awesome.min.css') !!}
+    <link rel="stylesheet" href="{{ asset('css/booststrap/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dataTable/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dropzone.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('css/tempusdominus-bootstrap-4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/estilos_menu.css') }}">
 
 </head>

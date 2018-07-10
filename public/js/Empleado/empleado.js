@@ -52,7 +52,7 @@ function guardarEmpleado(){
 		validaCampos('empleado')
 		var url = $("#APP_URL").val() + "/empleado/postStore/";
 		var params = $("#form-empleado").serialize();
-		params += "&_token=" + token+"&IdEmpresa="+$("#IdEmpresaG").val();
+		params += "&_token=" + token+"&IdEmpresa="+$("#IdEmpresaG").val()+"&FechaNacimiento="+$("#FechaNacimiento").val();
 		$.post(url, params).done(function(data){
 			cargarTablaempleado()
 			$('.close').click();
