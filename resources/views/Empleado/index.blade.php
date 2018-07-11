@@ -7,10 +7,11 @@
                 <div>
                     <h3 class="title_general">
                         Empleado       
-                        <a class="btn btn-primary " tile="Volver" href="{!! url('Empresa'); !!}" style="cursor: pointer;">
-                            <span  class="fa fa-arrow-left"></span>
-                        </a>  
-        
+                            @if(Session::get("PRIVILEGIOS")->IdTipoUsuario == 1)
+                            <a class="btn btn-primary " tile="Volver" href="{!! url('Empresa'); !!}" style="cursor: pointer;">
+                                <span  class="fa fa-arrow-left"></span>
+                            </a>  
+                            @endif
                   
                             <button type="button" id="AGREGAR"  class="btn btn-primary derecha"  data-toggle="modal" data-placement="bottom" data-target="#popup" title="Agregar registro" >
                                 <span class="fa fa-plus"></span>

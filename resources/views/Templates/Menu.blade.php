@@ -10,6 +10,7 @@
     background-position: center;opacity: 0.5" --}}
     <div class="container" >
         <div class="row"">
+            @if(Session::get("PRIVILEGIOS")->IdTipoUsuario == 1)
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                 <div class="vira-card">
                     <div class="vira-card-header">
@@ -20,22 +21,10 @@
                             
                         </a>
                     </div>
-                </div>
-            </div>
-            {{-- 
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                <div class="vira-card">
-                    <div class="vira-card-header">
-                        <a href="/Empleados" style="cursor:pointer;" role="button" aria-expanded="false" title="Empleados">
-                            <div class="card-icon">
-                                <span class="fa fa-users" aria-hidden="true"></span>
-                            </div>
-                            
-                        </a>
-                    </div>
-                </div>
+                </div> 
             </div> 
-            --}}
+            @endif
+            @if(Session::get("PRIVILEGIOS")->IdTipoUsuario == 1 || Session::get("PRIVILEGIOS")->IdTipoUsuario == 2)
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                 <div class="vira-card">
                     <div class="vira-card-header">
@@ -48,7 +37,22 @@
                     </div>
                 </div>
             </div>
-
+            @endif
+            @if(Session::get("PRIVILEGIOS")->IdTipoUsuario == 2)
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <div class="vira-card">
+                        <div class="vira-card-header">
+                            <a href="/Empleado/Index/{{Session::get("PRIVILEGIOS")->IdEmpresa}}" style="cursor:pointer;" role="button" aria-expanded="false" title="Empleados">
+                                <div class="card-icon">
+                                    <span class="fa fa-users" aria-hidden="true"></span>
+                                </div>
+                                
+                            </a>
+                        </div>
+                    </div>
+                </div> 
+           @endif
+            @if(Session::get("PRIVILEGIOS")->IdTipoUsuario == 1)
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                 <div class="vira-card">
                     <div class="vira-card-header">
@@ -61,6 +65,8 @@
                     </div>
                 </div>
             </div>
+            @endif
+
 
         </div>
     </div>

@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Jugueteria\model\Usuario_Model;
 use Jugueteria\model\Genero_model;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 use File;
 
 
@@ -21,8 +23,12 @@ class HijoEmpleadoController extends Controller
          $this->middleware(['auth:web' || 'auth:api']); 
     }
 
-       public function Index(Request $request)
+    public function Index(Request $request)
     {
+        if(Session::get("PRIVILEGIOS") == null){
+            Session::forget('PRIVILEGIOS');
+            return redirect::to('/');
+        }
         $IdEmpleado = $request->input('IdEmpleado');
 
         $view = view('HijoEmpleado.index')->with(['titulo' =>'Hijos del empleado','IdEmpleado'=>$IdEmpleado]);

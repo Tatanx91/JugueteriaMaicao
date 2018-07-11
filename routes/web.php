@@ -275,3 +275,7 @@ Route::post('/empresa/GuardarTxt',[
     'as' => 'GuardarTxt',
     'uses' => 'EmpresaController@GuardarTxt'
 ]);
+Route::post('/Galeria/EliminaRegistro',[
+    'as' => 'EliminaRegistro',
+    'uses' => 'GaleriaImgController@EliminaRegistro'
+]);

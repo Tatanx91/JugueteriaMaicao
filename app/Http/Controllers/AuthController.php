@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Jugueteria\Http\Controllers\Controller;
 use JWTAuth;
 use Tymon\JWTAuth\Exception\JWTException;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
@@ -36,11 +37,27 @@ class AuthController extends Controller
 
         // $usuarios = UsuariosModel::where('Correo', $credentials['Correo']);
         $usuarios = UsuariosModel::join('TipoUsuario', 'TipoUsuario.ID' ,'=', 'Usuario.IdTipoUsuario')
-            ->join('Administrador', 'Administrador.IdUsuario' ,'=', 'Usuario.ID')
+            //->join('Administrador', 'Administrador.IdUsuario' ,'=', 'Usuario.ID')
             ->where('Usuario.Correo', $credentials['Correo']);
         $existe = $usuarios->count();
         $usuario = $usuarios->first();
 
+        Session::forget('PRIVILEGIOS');
+        $session = null;
+        if($usuario != null ){
+            if($usuario->IdTipoUsuario == 1){
+                $session = UsuariosModel::join('TipoUsuario', 'TipoUsuario.ID' ,'=', 'Usuario.IdTipoUsuario')
+                        ->join('Administrador', 'Administrador.IdUsuario' ,'=', 'Usuario.ID')
+                        ->where('Usuario.Correo', $credentials['Correo'])->first();
+            }
+            if($usuario->IdTipoUsuario == 2 || $usuario->IdTipoUsuario == 3){
+                $session = UsuariosModel::join('TipoUsuario', 'TipoUsuario.ID' ,'=', 'Usuario.IdTipoUsuario')
+                        ->join('empleado', 'empleado.IdUsuario' ,'=', 'Usuario.ID')
+                        ->where('Usuario.Correo', $credentials['Correo'])->first();
+            }
+        }
+if($session != null){
+        Session::put("PRIVILEGIOS", $session);
         if($existe > 0 and $usuario['Confirmado'] == 0){
 
             $nombreUsuario = $usuario['NombreUsuario'];
@@ -73,7 +90,11 @@ class AuthController extends Controller
         // return view('Juguete.Index');
         // return view('Templates.Menu');
         // return view('Mensajes.MensajeErrorLogin');
+        // 
         return redirect::to('/inicio/menu');
+}else{
+    return redirect::to('/');
+}
     }
 
     /**

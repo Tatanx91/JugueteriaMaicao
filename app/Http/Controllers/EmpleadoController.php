@@ -10,6 +10,8 @@ use Jugueteria\model\TipoDocumento_Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Jugueteria\model\UsuariosModel;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 use File;
 
 class EmpleadoController extends Controller
@@ -22,6 +24,10 @@ class EmpleadoController extends Controller
     }
     public function Index($IdEmpresa)
     {
+        if(Session::get("PRIVILEGIOS") == null){
+            Session::forget('PRIVILEGIOS');
+            return redirect::to('/');
+        }
         $this->IdEmpresa = $IdEmpresa;
         return view('Empleado.index')->with(['IdEmpresa'=>$IdEmpresa]);
     }

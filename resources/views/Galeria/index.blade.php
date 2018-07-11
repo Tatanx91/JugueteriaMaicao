@@ -12,7 +12,7 @@ if($countimg>=5){
                 <div>
                     <h3 class="title_general">
                         Galeria        
-                        <a class="btn btn-primary " tile="Volver" href="{!! url('juguete'); !!}" style="float:right;cursor: pointer;">
+                        <a class="btn btn-primary " tile="Volver" href="{!! url('Juguete'); !!}" style="float:right;cursor: pointer;">
                             <span  class="fa fa-arrow-left fa-2x"></span>
                         </a>
                     </h3>
@@ -21,7 +21,7 @@ if($countimg>=5){
         </div>
 
         <div id="mensaje"></div>
-		{{ Form::hidden('id_modulo', 'galeriaIMG', array('id' => 'id_modulo')) }}
+        {{ Form::hidden('id_modulo', 'galeriaIMG', array('id' => 'id_modulo')) }}
         <div id="form_img" class="{{$class_from}}"  style="margin-bottom: 35px !important;">
             <div  class="row" style="margin-bottom: 5px;">
                 <div class="col-lg-4"></div>
@@ -56,14 +56,11 @@ if($countimg>=5){
             @foreach ($img as $item)
             <div class="col-lg-4 col-md-4 col-sm-3 col-sm-2" style="margin-bottom: 5% !important;">
                 <div class="card text-center">
-                  <div class="card-header">
-                   <span style='cursor: pointer;float: right;' id=estado_"{{$item->Imagen}}" class='fa fa-cogs fa-2x ' onclick=activarDessactivarJuguete('{{$item->idJugueteImg}}','{{$item->estado}}'); title='desactivar imagen'></span>
-                  </div>
                   <div class="card-body">
-                    <img src="{{url("/") .'/'. $item->ruta.$item->Imagen}}" style="width: 200px;height: 200px;" class="img-thumbnail">  
+                    <img src="{{url("/") .'/'. $item->Ruta.$item->Imagen}}" style="width: 200px;height: 200px;" class="img-thumbnail">  
                   </div>
                   <div class="card-footer text-muted">
-                  <span style='cursor: pointer;float: right;' id=estado_"{{$item->Imagen}}" class='fa fa-toggle-on fa-2x ' onclick=activarDessactivarJuguete('{{$item->idJugueteImg}}','{{$item->estado}}'); title='desactivar imagen'></span>
+                  <span style='cursor: pointer;float: right;' id=estado_"{{$item->Imagen}}" class='fa fa-trash fa-2x ' onclick=activarDessactivarJuguete('{{$item->ID}}','{{$item->IdJuguete}}'); title='Eliminar imagen'></span>
                   </div>
                 </div>
             </div>                 
@@ -91,6 +88,7 @@ if($countimg>=5){
         dictRemoveFile: '<span class="glyphicon glyphicon-remove-circle" style="margin-top: -140px; float: right; color:#39805F !important"></<span>',
 
             init: function() {
+                // alert(contadorImg)
                 contadorImgd = '{{$countimg}}';
                 var submitBtn = document.querySelector("#btn_logo");
                 myDropzones = this;            
@@ -117,13 +115,12 @@ if($countimg>=5){
         
                 });
                 this.on("success", function(file, response) {
-                    console.log(file);
-                    console.log(response);      
+                    // console.log(file);
+                    // console.log(response);      
                       $("#mensaje").html('<div class="alert alert-success alert-dismissible div-msg" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><b>'+response.mensaje+'</b></center></div>')   
-                      cargaImgs({{$juguete->IdJuguete}});
+                     cargaImgs({{$juguete->IdJuguete}});
                      contadorImgd++;
-                     alert(contadorImgd)
-                      validaForm(contadorImgd);
+                     validaForm(contadorImgd);
                 });
             }
         });
@@ -133,11 +130,14 @@ if($countimg>=5){
     });
     function  validaForm(contador){
         this.contadorImg = contador;
-        alert(this.contadorImg+'>='+this.maxfile)
+       // alert(this.contadorImg+'>='+this.maxfile)
         if(this.contadorImg >= this.maxfile){
             $("#form_img").addClass('d-none');
+        }else{
+            $("#form_img").removeClass('d-none');
         }
     }
+
     function cargaImgs(id){
      var url = $("#APP_URL").val() + "/Galeria/CargarContenedorImg/";
         $.post(url,{IdJuguete : id,_token:token})
@@ -150,5 +150,25 @@ if($countimg>=5){
                 
             });
     } 
+
+    function activarDessactivarJuguete(id,id_juguete){
+      if(confirmacion('¿Esta seguro de eliminar la imagen?')){
+
+                var url = $("#APP_URL").val() + "/Galeria/EliminaRegistro/";
+                $.post(url,{ID : id,_token:token})
+                .done(function(data){
+                    cargaImgs(id_juguete);
+                     contadorImgd--;
+                     validaForm(contadorImgd);
+                    $("#mensaje").html('<div class="alert alert-success alert-dismissible div-msg" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><b>'+data.mensaje+'</b></center></div>')        
+                        
+                }).fail(function(jqXHR){
+                    $("#mensaje").html('<div class="alert alert-danger alert-dismissible div-msg" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><center><b>Error al guardar</b></center></div>')
+                    
+                });
+      }else{
+        return false;
+      }
+    }
 </script>
 @endsection

@@ -10,6 +10,8 @@ use Jugueteria\model\AdministradorModel;
 use Illuminate\Support\Facades\Redirect;
 use Jugueteria\http\Request\UsuarioFormReqest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Mail;
 
 class UsuarioController extends Controller
@@ -22,6 +24,10 @@ class UsuarioController extends Controller
 
     public function index(Request $request)
     {
+        if(Session::get("PRIVILEGIOS") == null){
+            Session::forget('PRIVILEGIOS');
+            return redirect::to('/');
+        }
     	$nombre ='';
     	if($request)
     	{

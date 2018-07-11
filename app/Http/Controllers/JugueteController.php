@@ -9,6 +9,7 @@ use Jugueteria\model\Juguete_model;
 use Jugueteria\model\Genero_model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class JugueteController extends Controller
 {
@@ -23,7 +24,10 @@ class JugueteController extends Controller
      */
     public function Index()
     {
-
+        if(Session::get("PRIVILEGIOS") == null){
+            Session::forget('PRIVILEGIOS');
+            return redirect::to('/');
+        }
         return view('Juguete.index');
     }
 

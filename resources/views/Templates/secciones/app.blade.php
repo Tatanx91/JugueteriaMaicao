@@ -23,25 +23,39 @@
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
+
+              @if(Session::get("PRIVILEGIOS")->IdTipoUsuario == 1)
               <li class="nav-item">
                     <a href="{{ url('Usuarios') }}" title="Usuarios" style="color: #FFFFFF;" class="nav-link">
                         <span class="fa fa-user" aria-hidden="true" style="color:#FFFFFF">Usuarios</span>
                     </a>
               </li>
-              <li class="nav-item">
-                    <a href="{{ url('Juguete') }}" title="Juguetes" style="color: #FFFFFF;" class="nav-link">
-                        <span class="fa fa-space-shuttle" aria-hidden="true" style="color:#FFFFFF">Juguetes</span>
-                    </a>
-              </li>
+              @endif
+              @if(Session::get("PRIVILEGIOS")->IdTipoUsuario == 1 || Session::get("PRIVILEGIOS")->IdTipoUsuario == 2)
               <li class="nav-item">
                     <a href="{{ url('Empresa') }}" title="Empresa" style="color: #FFFFFF;" class="nav-link">
                         <span class="fa fa-building" aria-hidden="true" style="color:#FFFFFF">Empresas</span>                
                     </a> 
               </li>
+              @endif
+              @if(Session::get("PRIVILEGIOS")->IdTipoUsuario == 2)
+              <li class="nav-item">
+                    <a href="{{ url('/Empleado/Index/'.Session::get("PRIVILEGIOS")->IdEmpresa) }}" title="Empresa" style="color: #FFFFFF;" class="nav-link">
+                        <span class="fa fa-users" aria-hidden="true" style="color:#FFFFFF">Empleados</span>                
+                    </a> 
+              </li>
+              @endif
+              @if(Session::get("PRIVILEGIOS")->IdTipoUsuario == 1)
+              <li class="nav-item">
+                    <a href="{{ url('Juguete') }}" title="Juguetes" style="color: #FFFFFF;" class="nav-link">
+                        <span class="fa fa-space-shuttle" aria-hidden="true" style="color:#FFFFFF">Juguetes</span>
+                    </a>
+              </li>
+              @endif
             </ul>
           </div>
         </nav>       
-        <a href="{{ url('/Inicio') }}" title="Cerrar Sesion" style="color: #FFFFFF;float: right;">
+        <a href="{{ url('/') }}" title="Cerrar Sesion" style="color: #FFFFFF;float: right;">
             Cerrar Sesion
         </a>   
     </div>

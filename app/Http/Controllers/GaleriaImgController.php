@@ -5,16 +5,23 @@ namespace Jugueteria\Http\Controllers;
 use Illuminate\Http\Request;
 use Jugueteria\model\Juguete_model;
 use Jugueteria\model\rel_juguete_img;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 use File;
 
 class GaleriaImgController extends Controller
 {
     public function getGaleriaImg(Request $request)
     {
+        if(Session::get("PRIVILEGIOS") == null){
+            Session::forget('PRIVILEGIOS');
+            return redirect::to('/');
+        }
         $jugueteID = $request->input('Id');
         $img = rel_juguete_img::join('juguete','juguete.ID','=','jugueteimg.IdJuguete')
-         ->select('jugueteimg.*')->where('jugueteimg.IdJuguete','=',$jugueteID)->get();
+         ->select('jugueteimg.*')->where('jugueteimg.IdJuguete','=',$jugueteID)->where('JugueteImg.estado','=',1)->get();
         $juguete = $jugueteID == "" ? new Juguete_model() : Juguete_model::find($jugueteID);
+        $juguete['IdJuguete']=$jugueteID;
         $countimg = $img->count();
            return view('Galeria.index') ->with([
             'juguete'=>$juguete,'img'=>$img ,'countimg'=>$countimg]);
@@ -25,17 +32,16 @@ class GaleriaImgController extends Controller
 
 	            $data = $request->all();
 		        $jugueteID = $request->input('Id');
-		        $Idimg = $request->input('idJugueteImg');
+		        $Idimg = $request->input('ID');
 
-				$juguete = Juguete_model::find($jugueteID);
 	            $img = $Idimg == "" ? new rel_juguete_img() : rel_juguete_img::find($Idimg);
 
 		        $file = $request->file('file');
 		        $allowedFiles = array('jpeg', 'jpg', 'png');
 		        $path = public_path().'/uploads/ImgJuguete/'.$jugueteID.'/'; 
 
-	 			if(($img['idJugueteImg'] != "" || $img['idJugueteImg'] != null)) {
-	                $filename = public_path().'/uploads/ImgJuguete/'.$juguete['ID'].'/'.$juguete['idJugueteImg'];
+	 			if(($img['ID'] != "" || $img['ID'] != null)) {
+	                $filename = public_path().'/uploads/ImgJuguete/'.$jugueteID.'/'.$img['ID'];
 	                File::delete($filename);
 	            }
 
@@ -57,13 +63,10 @@ class GaleriaImgController extends Controller
 		            $img->fill($data);
 		            $img->save();
                 	$fileName = str_replace(" ", "_", $file->getClientOriginalName());
-                    $file->move($path, 'Jugueteimg'.$img['idJugueteImg'].'.'.$extension);             
-		            $juguete['Imagenes'] = 'Jugueteimg'.$img['idJugueteImg'].'.'.$extension;
-            		$juguete['estado'] = 1;
-		            $juguete->fill($data);
-		            $juguete->save();
+                    $file->move($path, 'Jugueteimg'.$img['ID'].'.'.$extension);             
+		            
 
-					$img['Imagen']= 'Jugueteimg'.$img['idJugueteImg'].'.'.$extension;
+					$img['Imagen']= 'Jugueteimg'.$img['ID'].'.'.$extension;
 					$img->fill($data);
 		            $img->save();
                 }else{
@@ -90,12 +93,40 @@ class GaleriaImgController extends Controller
     public function CargarContenedorImg(Request $request)
     {
         $jugueteID = $request->input('IdJuguete');
-        $img = rel_juguete_img::join('Juguete','Juguete.IdJuguete','=','JugueteImg.IdJuguete')
-         ->select('JugueteImg.*')->where('JugueteImg.IdJuguete','=',$jugueteID)->get();
+        $img = rel_juguete_img::join('Juguete','Juguete.ID','=','JugueteImg.IdJuguete')
+         ->select('JugueteImg.*')->where('JugueteImg.IdJuguete','=',$jugueteID)->where('JugueteImg.estado','=',1)->get();
        
 
         $view = view('Galeria.contendorImg')->with(['img'=>$img]);
         return $view;
     }
+ 
+
+    public function EliminaRegistro(Request $request)
+    {
+        try {
+            
+            $ID = $request->input('ID');
+            $estado = $request->input('estado');
+            $juguete = rel_juguete_img::find($ID);
+            $juguete['estado'] = 0;
+            $data = $request->all();
+            $juguete->fill($data);
+            $juguete->save();
+    
+        } catch (Exception $e) {
+            return response([
+                    "mensaje" => "Error al guardar, por favor intenta de nuevo o comunícate con el administrador.",
+                    "error" => $e->getMessage()
+                ]);
+        }
+        
+        return response([
+                "success" => true,
+                "mensaje" => "Datos guardados correctamente",
+                //"request" => $request->all(),
+                "juguete" => $juguete
+            ]);
+    }   
     
 }
